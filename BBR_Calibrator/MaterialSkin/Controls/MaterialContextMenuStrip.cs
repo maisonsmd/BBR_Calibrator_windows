@@ -3,33 +3,34 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
+
 using MaterialSkin.Animations;
 
-namespace MaterialSkin.Controls
-{
-    public class MaterialContextMenuStrip : ContextMenuStrip, IMaterialControl
-    {
+namespace MaterialSkin.Controls {
+
+    public class MaterialContextMenuStrip : ContextMenuStrip, IMaterialControl {
+
         //Properties for managing the material design properties
         [Browsable(false)]
         public int Depth { get; set; }
+
         [Browsable(false)]
         public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
+
         [Browsable(false)]
         public MouseState MouseState { get; set; }
-
 
         internal AnimationManager AnimationManager;
         internal Point AnimationSource;
 
-        public delegate void ItemClickStart(object sender, ToolStripItemClickedEventArgs e);
+        public delegate void ItemClickStart ( object sender, ToolStripItemClickedEventArgs e );
+
         public event ItemClickStart OnItemClickStart;
 
-        public MaterialContextMenuStrip()
-        {
+        public MaterialContextMenuStrip ( ) {
             Renderer = new MaterialToolStripRender();
 
-            AnimationManager = new AnimationManager(false)
-            {
+            AnimationManager = new AnimationManager(false) {
                 Increment = 0.07,
                 AnimationType = AnimationType.Linear
             };
@@ -39,25 +40,21 @@ namespace MaterialSkin.Controls
             BackColor = SkinManager.GetApplicationBackgroundColor();
         }
 
-        protected override void OnMouseUp(MouseEventArgs mea)
-        {
+        protected override void OnMouseUp ( MouseEventArgs mea ) {
             base.OnMouseUp(mea);
 
             AnimationSource = mea.Location;
         }
 
         private ToolStripItemClickedEventArgs _delayesArgs;
-        protected override void OnItemClicked(ToolStripItemClickedEventArgs e)
-        {
-            if (e.ClickedItem != null && !(e.ClickedItem is ToolStripSeparator))
-            {
-                if (e == _delayesArgs)
-                {
+
+        protected override void OnItemClicked ( ToolStripItemClickedEventArgs e ) {
+            if (e.ClickedItem != null && !(e.ClickedItem is ToolStripSeparator)) {
+                if (e == _delayesArgs) {
                     //The event has been fired manualy because the args are the ones we saved for delay
                     base.OnItemClicked(e);
                 }
-                else
-                {
+                else {
                     //Interrupt the default on click, saving the args for the delay which is needed to display the animaton
                     _delayesArgs = e;
 
@@ -71,18 +68,17 @@ namespace MaterialSkin.Controls
         }
     }
 
-    public class MaterialToolStripMenuItem : ToolStripMenuItem
-    {
-        public MaterialToolStripMenuItem()
-        {
+    public class MaterialToolStripMenuItem : ToolStripMenuItem {
+
+        public MaterialToolStripMenuItem ( ) {
             AutoSize = false;
             Size = new Size(120, 30);
         }
 
-        protected override ToolStripDropDown CreateDefaultDropDown()
-        {
+        protected override ToolStripDropDown CreateDefaultDropDown ( ) {
             var baseDropDown = base.CreateDefaultDropDown();
-            if (DesignMode) return baseDropDown;
+            if (DesignMode)
+                return baseDropDown;
 
             var defaultDropDown = new MaterialContextMenuStrip();
             defaultDropDown.Items.AddRange(baseDropDown.Items);
@@ -91,16 +87,15 @@ namespace MaterialSkin.Controls
         }
     }
 
-    internal class MaterialToolStripRender : ToolStripProfessionalRenderer, IMaterialControl
-    {
+    internal class MaterialToolStripRender : ToolStripProfessionalRenderer, IMaterialControl {
+
         //Properties for managing the material design properties
         public int Depth { get; set; }
+
         public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
         public MouseState MouseState { get; set; }
 
-
-        protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
-        {
+        protected override void OnRenderItemText ( ToolStripItemTextRenderEventArgs e ) {
             var g = e.Graphics;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
@@ -114,8 +109,7 @@ namespace MaterialSkin.Controls
                 new StringFormat { LineAlignment = StringAlignment.Center });
         }
 
-        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
-        {
+        protected override void OnRenderMenuItemBackground ( ToolStripItemRenderEventArgs e ) {
             var g = e.Graphics;
             g.Clear(SkinManager.GetApplicationBackgroundColor());
 
@@ -125,14 +119,11 @@ namespace MaterialSkin.Controls
 
             //Ripple animation
             var toolStrip = e.ToolStrip as MaterialContextMenuStrip;
-            if (toolStrip != null)
-            {
+            if (toolStrip != null) {
                 var animationManager = toolStrip.AnimationManager;
                 var animationSource = toolStrip.AnimationSource;
-                if (toolStrip.AnimationManager.IsAnimating() && e.Item.Bounds.Contains(animationSource))
-                {
-                    for (int i = 0; i < animationManager.GetAnimationCount(); i++)
-                    {
+                if (toolStrip.AnimationManager.IsAnimating() && e.Item.Bounds.Contains(animationSource)) {
+                    for (int i = 0; i < animationManager.GetAnimationCount(); i++) {
                         var animationValue = animationManager.GetProgress(i);
                         var rippleBrush = new SolidBrush(Color.FromArgb((int)(51 - (animationValue * 50)), Color.Black));
                         var rippleSize = (int)(animationValue * itemRect.Width * 2.5);
@@ -142,13 +133,11 @@ namespace MaterialSkin.Controls
             }
         }
 
-        protected override void OnRenderImageMargin(ToolStripRenderEventArgs e)
-        {
+        protected override void OnRenderImageMargin ( ToolStripRenderEventArgs e ) {
             //base.OnRenderImageMargin(e);
         }
 
-        protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
-        {
+        protected override void OnRenderSeparator ( ToolStripSeparatorRenderEventArgs e ) {
             var g = e.Graphics;
 
             g.FillRectangle(new SolidBrush(SkinManager.GetApplicationBackgroundColor()), e.Item.Bounds);
@@ -158,8 +147,7 @@ namespace MaterialSkin.Controls
                 new Point(e.Item.Bounds.Right, e.Item.Bounds.Height / 2));
         }
 
-        protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
-        {
+        protected override void OnRenderToolStripBorder ( ToolStripRenderEventArgs e ) {
             var g = e.Graphics;
 
             g.DrawRectangle(
@@ -167,17 +155,15 @@ namespace MaterialSkin.Controls
                 new Rectangle(e.AffectedBounds.X, e.AffectedBounds.Y, e.AffectedBounds.Width - 1, e.AffectedBounds.Height - 1));
         }
 
-        protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
-        {
+        protected override void OnRenderArrow ( ToolStripArrowRenderEventArgs e ) {
             var g = e.Graphics;
             const int ARROW_SIZE = 4;
 
             var arrowMiddle = new Point(e.ArrowRectangle.X + e.ArrowRectangle.Width / 2, e.ArrowRectangle.Y + e.ArrowRectangle.Height / 2);
             var arrowBrush = e.Item.Enabled ? SkinManager.GetPrimaryTextBrush() : SkinManager.GetDisabledOrHintBrush();
-            using (var arrowPath = new GraphicsPath())
-            {
+            using (var arrowPath = new GraphicsPath()) {
                 arrowPath.AddLines(
-                    new[] {
+                    new [] {
                         new Point(arrowMiddle.X - ARROW_SIZE, arrowMiddle.Y - ARROW_SIZE),
                         new Point(arrowMiddle.X, arrowMiddle.Y),
                         new Point(arrowMiddle.X - ARROW_SIZE, arrowMiddle.Y + ARROW_SIZE) });
@@ -187,8 +173,7 @@ namespace MaterialSkin.Controls
             }
         }
 
-        private Rectangle GetItemRect(ToolStripItem item)
-        {
+        private Rectangle GetItemRect ( ToolStripItem item ) {
             return new Rectangle(0, item.ContentRectangle.Y, item.ContentRectangle.Width + 4, item.ContentRectangle.Height);
         }
     }

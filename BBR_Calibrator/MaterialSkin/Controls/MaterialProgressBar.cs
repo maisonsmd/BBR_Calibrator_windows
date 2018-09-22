@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace MaterialSkin.Controls
-{
+namespace MaterialSkin.Controls {
+
     /// <summary>
     /// Material design-like progress bar
     /// </summary>
-    public class MaterialProgressBar : ProgressBar, IMaterialControl
-    {
+    public class MaterialProgressBar : ProgressBar, IMaterialControl {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialProgressBar"/> class.
         /// </summary>
-        public MaterialProgressBar()
-        {
+        public MaterialProgressBar ( ) {
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
@@ -52,8 +51,7 @@ namespace MaterialSkin.Controls
         /// <param name="width">The new <see cref="P:System.Windows.Forms.Control.Width" /> property value of the control.</param>
         /// <param name="height">The new <see cref="P:System.Windows.Forms.Control.Height" /> property value of the control.</param>
         /// <param name="specified">A bitwise combination of the <see cref="T:System.Windows.Forms.BoundsSpecified" /> values.</param>
-        protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
-        {
+        protected override void SetBoundsCore ( int x, int y, int width, int height, BoundsSpecified specified ) {
             base.SetBoundsCore(x, y, width, 5, specified);
         }
 
@@ -61,8 +59,7 @@ namespace MaterialSkin.Controls
         /// Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
+        protected override void OnPaint ( PaintEventArgs e ) {
             var doneProgress = (int)(e.ClipRectangle.Width * ((double)Value / Maximum));
             e.Graphics.FillRectangle(SkinManager.ColorScheme.PrimaryBrush, 0, 0, doneProgress, e.ClipRectangle.Height);
             e.Graphics.FillRectangle(SkinManager.GetDisabledOrHintBrush(), doneProgress, 0, e.ClipRectangle.Width, e.ClipRectangle.Height);

@@ -4,18 +4,22 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
+
 using MaterialSkin.Animations;
 
-namespace MaterialSkin.Controls
-{
-    public class MaterialFlatButton : Button, IMaterialControl
-    {
+namespace MaterialSkin.Controls {
+
+    public class MaterialFlatButton : Button, IMaterialControl {
+
         [Browsable(false)]
         public int Depth { get; set; }
+
         [Browsable(false)]
         public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
+
         [Browsable(false)]
         public MouseState MouseState { get; set; }
+
         public bool Primary { get; set; }
 
         private readonly AnimationManager _animationManager;
@@ -24,11 +28,10 @@ namespace MaterialSkin.Controls
         private SizeF _textSize;
 
         private Image _icon;
-        public Image Icon
-        {
+
+        public Image Icon {
             get { return _icon; }
-            set
-            {
+            set {
                 _icon = value;
                 if (AutoSize)
                     Size = GetPreferredSize();
@@ -36,17 +39,14 @@ namespace MaterialSkin.Controls
             }
         }
 
-        public MaterialFlatButton()
-        {
+        public MaterialFlatButton ( ) {
             Primary = false;
 
-            _animationManager = new AnimationManager(false)
-            {
+            _animationManager = new AnimationManager(false) {
                 Increment = 0.03,
                 AnimationType = AnimationType.EaseOut
             };
-            _hoverAnimationManager = new AnimationManager
-            {
+            _hoverAnimationManager = new AnimationManager {
                 Increment = 0.07,
                 AnimationType = AnimationType.Linear
             };
@@ -60,11 +60,9 @@ namespace MaterialSkin.Controls
             Padding = new Padding(0);
         }
 
-        public override string Text
-        {
+        public override string Text {
             get { return base.Text; }
-            set
-            {
+            set {
                 base.Text = value;
                 _textSize = CreateGraphics().MeasureString(value.ToUpper(), SkinManager.ROBOTO_MEDIUM_10);
                 if (AutoSize)
@@ -73,8 +71,7 @@ namespace MaterialSkin.Controls
             }
         }
 
-        protected override void OnPaint(PaintEventArgs pevent)
-        {
+        protected override void OnPaint ( PaintEventArgs pevent ) {
             var g = pevent.Graphics;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
@@ -86,16 +83,13 @@ namespace MaterialSkin.Controls
                 g.FillRectangle(b, ClientRectangle);
 
             //Ripple
-            if (_animationManager.IsAnimating())
-            {
+            if (_animationManager.IsAnimating()) {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
-                for (var i = 0; i < _animationManager.GetAnimationCount(); i++)
-                {
+                for (var i = 0; i < _animationManager.GetAnimationCount(); i++) {
                     var animationValue = _animationManager.GetProgress(i);
                     var animationSource = _animationManager.GetSource(i);
 
-                    using (Brush rippleBrush = new SolidBrush(Color.FromArgb((int)(101 - (animationValue * 100)), Color.Black)))
-                    {
+                    using (Brush rippleBrush = new SolidBrush(Color.FromArgb((int)(101 - (animationValue * 100)), Color.Black))) {
                         var rippleSize = (int)(animationValue * Width * 2);
                         g.FillEllipse(rippleBrush, new Rectangle(animationSource.X - rippleSize / 2, animationSource.Y - rippleSize / 2, rippleSize, rippleSize));
                     }
@@ -116,8 +110,7 @@ namespace MaterialSkin.Controls
             //Text
             var textRect = ClientRectangle;
 
-            if (Icon != null)
-            {
+            if (Icon != null) {
                 //
                 // Resize and move Text container
                 //
@@ -143,13 +136,11 @@ namespace MaterialSkin.Controls
                 );
         }
 
-        private Size GetPreferredSize()
-        {
+        private Size GetPreferredSize ( ) {
             return GetPreferredSize(new Size(0, 0));
         }
 
-        public override Size GetPreferredSize(Size proposedSize)
-        {
+        public override Size GetPreferredSize ( Size proposedSize ) {
             // Provides extra space for proper padding for content
             var extra = 16;
 
@@ -161,36 +152,31 @@ namespace MaterialSkin.Controls
             return new Size((int)Math.Ceiling(_textSize.Width) + extra, 36);
         }
 
-        protected override void OnCreateControl()
-        {
+        protected override void OnCreateControl ( ) {
             base.OnCreateControl();
-            if (DesignMode) return;
+            if (DesignMode)
+                return;
 
             MouseState = MouseState.OUT;
-            MouseEnter += (sender, args) =>
-            {
+            MouseEnter += ( sender, args ) => {
                 MouseState = MouseState.HOVER;
                 _hoverAnimationManager.StartNewAnimation(AnimationDirection.In);
                 Invalidate();
             };
-            MouseLeave += (sender, args) =>
-            {
+            MouseLeave += ( sender, args ) => {
                 MouseState = MouseState.OUT;
                 _hoverAnimationManager.StartNewAnimation(AnimationDirection.Out);
                 Invalidate();
             };
-            MouseDown += (sender, args) =>
-            {
-                if (args.Button == MouseButtons.Left)
-                {
+            MouseDown += ( sender, args ) => {
+                if (args.Button == MouseButtons.Left) {
                     MouseState = MouseState.DOWN;
 
                     _animationManager.StartNewAnimation(AnimationDirection.In, args.Location);
                     Invalidate();
                 }
             };
-            MouseUp += (sender, args) =>
-            {
+            MouseUp += ( sender, args ) => {
                 MouseState = MouseState.HOVER;
 
                 Invalidate();

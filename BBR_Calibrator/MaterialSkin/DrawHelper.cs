@@ -1,12 +1,11 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace MaterialSkin
-{
-    static class DrawHelper
-    {
-        public static GraphicsPath CreateRoundRect(float x, float y, float width, float height, float radius)
-        {
+namespace MaterialSkin {
+
+    internal static class DrawHelper {
+
+        public static GraphicsPath CreateRoundRect ( float x, float y, float width, float height, float radius ) {
             var gp = new GraphicsPath();
             gp.AddLine(x + radius, y, x + width - (radius * 2), y);
             gp.AddArc(x + width - (radius * 2), y, radius * 2, radius * 2, 270, 90);
@@ -20,13 +19,11 @@ namespace MaterialSkin
             return gp;
         }
 
-        public static GraphicsPath CreateRoundRect(Rectangle rect, float radius)
-        {
+        public static GraphicsPath CreateRoundRect ( Rectangle rect, float radius ) {
             return CreateRoundRect(rect.X, rect.Y, rect.Width, rect.Height, radius);
         }
 
-        public static Color BlendColor(Color backgroundColor, Color frontColor, double blend)
-        {
+        public static Color BlendColor ( Color backgroundColor, Color frontColor, double blend ) {
             var ratio = blend / 255d;
             var invRatio = 1d - ratio;
             var r = (int)((backgroundColor.R * invRatio) + (frontColor.R * ratio));
@@ -35,8 +32,7 @@ namespace MaterialSkin
             return Color.FromArgb(r, g, b);
         }
 
-        public static Color BlendColor(Color backgroundColor, Color frontColor)
-        {
+        public static Color BlendColor ( Color backgroundColor, Color frontColor ) {
             return BlendColor(backgroundColor, frontColor, frontColor.A);
         }
     }

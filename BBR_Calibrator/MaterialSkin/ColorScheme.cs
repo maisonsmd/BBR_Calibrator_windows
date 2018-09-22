@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
 
-namespace MaterialSkin
-{
-    public class ColorScheme
-    {
+namespace MaterialSkin {
+
+    public class ColorScheme {
         public readonly Color PrimaryColor, DarkPrimaryColor, LightPrimaryColor, AccentColor, TextColor;
         public readonly Pen PrimaryPen, DarkPrimaryPen, LightPrimaryPen, AccentPen, TextPen;
         public readonly Brush PrimaryBrush, DarkPrimaryBrush, LightPrimaryBrush, AccentBrush, TextBrush;
@@ -16,8 +15,7 @@ namespace MaterialSkin
         /// <param name="lightPrimary">A lighter version of the primary color, a -100 color is suggested here.</param>
         /// <param name="accent">The accent color, a -200 color is suggested here.</param>
         /// <param name="textShade">The text color, the one with the highest contrast is suggested.</param>
-        public ColorScheme(Primary primary, Primary darkPrimary, Primary lightPrimary, Accent accent, TextShade textShade)
-        {
+        public ColorScheme ( Primary primary, Primary darkPrimary, Primary lightPrimary, Accent accent, TextShade textShade ) {
             //Color
             PrimaryColor = ((int)primary).ToColor();
             DarkPrimaryColor = ((int)darkPrimary).ToColor();
@@ -41,14 +39,13 @@ namespace MaterialSkin
         }
     }
 
-    public static class ColorExtension
-    {
+    public static class ColorExtension {
+
         /// <summary>
         /// Convert an integer number to a Color.
         /// </summary>
         /// <returns></returns>
-        public static Color ToColor(this int argb)
-        {
+        public static Color ToColor ( this int argb ) {
             return Color.FromArgb(
                 (argb & 0xff0000) >> 16,
                 (argb & 0xff00) >> 8,
@@ -60,8 +57,7 @@ namespace MaterialSkin
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public static Color RemoveAlpha(this Color color)
-        {
+        public static Color RemoveAlpha ( this Color color ) {
             return Color.FromArgb(color.R, color.G, color.B);
         }
 
@@ -70,21 +66,18 @@ namespace MaterialSkin
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public static int PercentageToColorComponent(this int percentage)
-        {
+        public static int PercentageToColorComponent ( this int percentage ) {
             return (int)((percentage / 100d) * 255d);
         }
     }
 
     //Color constantes
-    public enum TextShade
-    {
+    public enum TextShade {
         WHITE = 0xFFFFFF,
         BLACK = 0x212121
     }
 
-    public enum Primary
-    {
+    public enum Primary {
         Red50 = 0xFFEBEE,
         Red100 = 0xFFCDD2,
         Red200 = 0xEF9A9A,
@@ -277,8 +270,7 @@ namespace MaterialSkin
         BlueGrey900 = 0x263238
     }
 
-    public enum Accent
-    {
+    public enum Accent {
         Red100 = 0xFF8A80,
         Red200 = 0xFF5252,
         Red400 = 0xFF1744,

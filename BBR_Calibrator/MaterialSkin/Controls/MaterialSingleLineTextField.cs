@@ -3,17 +3,20 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
 using MaterialSkin.Animations;
 
-namespace MaterialSkin.Controls
-{
-    public class MaterialSingleLineTextField : Control, IMaterialControl
-    {
+namespace MaterialSkin.Controls {
+
+    public class MaterialSingleLineTextField : Control, IMaterialControl {
+
         //Properties for managing the material design properties
         [Browsable(false)]
         public int Depth { get; set; }
+
         [Browsable(false)]
         public MaterialSkinManager SkinManager => MaterialSkinManager.Instance;
+
         [Browsable(false)]
         public MouseState MouseState { get; set; }
 
@@ -34,928 +37,708 @@ namespace MaterialSkin.Controls
         public bool UseSystemPasswordChar { get { return _baseTextBox.UseSystemPasswordChar; } set { _baseTextBox.UseSystemPasswordChar = value; } }
         public char PasswordChar { get { return _baseTextBox.PasswordChar; } set { _baseTextBox.PasswordChar = value; } }
 
-        public void SelectAll() { _baseTextBox.SelectAll(); }
-        public void Clear() { _baseTextBox.Clear(); }
-        public void Focus() { _baseTextBox.Focus(); }
+        public void SelectAll ( ) {
+            _baseTextBox.SelectAll();
+        }
 
+        public void Clear ( ) {
+            _baseTextBox.Clear();
+        }
+
+        public void Focus ( ) {
+            _baseTextBox.Focus();
+        }
 
         # region Forwarding events to baseTextBox
-        public event EventHandler AcceptsTabChanged
-        {
-            add
-            {
+
+        public event EventHandler AcceptsTabChanged {
+            add {
                 _baseTextBox.AcceptsTabChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.AcceptsTabChanged -= value;
             }
         }
 
-        public new event EventHandler AutoSizeChanged
-        {
-            add
-            {
+        public new event EventHandler AutoSizeChanged {
+            add {
                 _baseTextBox.AutoSizeChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.AutoSizeChanged -= value;
             }
         }
 
-        public new event EventHandler BackgroundImageChanged
-        {
-            add
-            {
+        public new event EventHandler BackgroundImageChanged {
+            add {
                 _baseTextBox.BackgroundImageChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.BackgroundImageChanged -= value;
             }
         }
 
-        public new event EventHandler BackgroundImageLayoutChanged
-        {
-            add
-            {
+        public new event EventHandler BackgroundImageLayoutChanged {
+            add {
                 _baseTextBox.BackgroundImageLayoutChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.BackgroundImageLayoutChanged -= value;
             }
         }
 
-        public new event EventHandler BindingContextChanged
-        {
-            add
-            {
+        public new event EventHandler BindingContextChanged {
+            add {
                 _baseTextBox.BindingContextChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.BindingContextChanged -= value;
             }
         }
 
-        public event EventHandler BorderStyleChanged
-        {
-            add
-            {
+        public event EventHandler BorderStyleChanged {
+            add {
                 _baseTextBox.BorderStyleChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.BorderStyleChanged -= value;
             }
         }
 
-        public new event EventHandler CausesValidationChanged
-        {
-            add
-            {
+        public new event EventHandler CausesValidationChanged {
+            add {
                 _baseTextBox.CausesValidationChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.CausesValidationChanged -= value;
             }
         }
 
-        public new event UICuesEventHandler ChangeUICues
-        {
-            add
-            {
+        public new event UICuesEventHandler ChangeUICues {
+            add {
                 _baseTextBox.ChangeUICues += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ChangeUICues -= value;
             }
         }
 
-        public new event EventHandler Click
-        {
-            add
-            {
+        public new event EventHandler Click {
+            add {
                 _baseTextBox.Click += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Click -= value;
             }
         }
 
-        public new event EventHandler ClientSizeChanged
-        {
-            add
-            {
+        public new event EventHandler ClientSizeChanged {
+            add {
                 _baseTextBox.ClientSizeChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ClientSizeChanged -= value;
             }
         }
 
-        public new event EventHandler ContextMenuChanged
-        {
-            add
-            {
+        public new event EventHandler ContextMenuChanged {
+            add {
                 _baseTextBox.ContextMenuChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ContextMenuChanged -= value;
             }
         }
 
-        public new event EventHandler ContextMenuStripChanged
-        {
-            add
-            {
+        public new event EventHandler ContextMenuStripChanged {
+            add {
                 _baseTextBox.ContextMenuStripChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ContextMenuStripChanged -= value;
             }
         }
 
-        public new event ControlEventHandler ControlAdded
-        {
-            add
-            {
+        public new event ControlEventHandler ControlAdded {
+            add {
                 _baseTextBox.ControlAdded += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ControlAdded -= value;
             }
         }
 
-        public new event ControlEventHandler ControlRemoved
-        {
-            add
-            {
+        public new event ControlEventHandler ControlRemoved {
+            add {
                 _baseTextBox.ControlRemoved += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ControlRemoved -= value;
             }
         }
 
-        public new event EventHandler CursorChanged
-        {
-            add
-            {
+        public new event EventHandler CursorChanged {
+            add {
                 _baseTextBox.CursorChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.CursorChanged -= value;
             }
         }
 
-        public new event EventHandler Disposed
-        {
-            add
-            {
+        public new event EventHandler Disposed {
+            add {
                 _baseTextBox.Disposed += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Disposed -= value;
             }
         }
 
-        public new event EventHandler DockChanged
-        {
-            add
-            {
+        public new event EventHandler DockChanged {
+            add {
                 _baseTextBox.DockChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.DockChanged -= value;
             }
         }
 
-        public new event EventHandler DoubleClick
-        {
-            add
-            {
+        public new event EventHandler DoubleClick {
+            add {
                 _baseTextBox.DoubleClick += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.DoubleClick -= value;
             }
         }
 
-        public new event DragEventHandler DragDrop
-        {
-            add
-            {
+        public new event DragEventHandler DragDrop {
+            add {
                 _baseTextBox.DragDrop += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.DragDrop -= value;
             }
         }
 
-        public new event DragEventHandler DragEnter
-        {
-            add
-            {
+        public new event DragEventHandler DragEnter {
+            add {
                 _baseTextBox.DragEnter += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.DragEnter -= value;
             }
         }
 
-        public new event EventHandler DragLeave
-        {
-            add
-            {
+        public new event EventHandler DragLeave {
+            add {
                 _baseTextBox.DragLeave += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.DragLeave -= value;
             }
         }
 
-        public new event DragEventHandler DragOver
-        {
-            add
-            {
+        public new event DragEventHandler DragOver {
+            add {
                 _baseTextBox.DragOver += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.DragOver -= value;
             }
         }
 
-        public new event EventHandler EnabledChanged
-        {
-            add
-            {
+        public new event EventHandler EnabledChanged {
+            add {
                 _baseTextBox.EnabledChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.EnabledChanged -= value;
             }
         }
 
-        public new event EventHandler Enter
-        {
-            add
-            {
+        public new event EventHandler Enter {
+            add {
                 _baseTextBox.Enter += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Enter -= value;
             }
         }
 
-        public new event EventHandler FontChanged
-        {
-            add
-            {
+        public new event EventHandler FontChanged {
+            add {
                 _baseTextBox.FontChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.FontChanged -= value;
             }
         }
 
-        public new event EventHandler ForeColorChanged
-        {
-            add
-            {
+        public new event EventHandler ForeColorChanged {
+            add {
                 _baseTextBox.ForeColorChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ForeColorChanged -= value;
             }
         }
 
-        public new event GiveFeedbackEventHandler GiveFeedback
-        {
-            add
-            {
+        public new event GiveFeedbackEventHandler GiveFeedback {
+            add {
                 _baseTextBox.GiveFeedback += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.GiveFeedback -= value;
             }
         }
 
-        public new event EventHandler GotFocus
-        {
-            add
-            {
+        public new event EventHandler GotFocus {
+            add {
                 _baseTextBox.GotFocus += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.GotFocus -= value;
             }
         }
 
-        public new event EventHandler HandleCreated
-        {
-            add
-            {
+        public new event EventHandler HandleCreated {
+            add {
                 _baseTextBox.HandleCreated += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.HandleCreated -= value;
             }
         }
 
-        public new event EventHandler HandleDestroyed
-        {
-            add
-            {
+        public new event EventHandler HandleDestroyed {
+            add {
                 _baseTextBox.HandleDestroyed += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.HandleDestroyed -= value;
             }
         }
 
-        public new event HelpEventHandler HelpRequested
-        {
-            add
-            {
+        public new event HelpEventHandler HelpRequested {
+            add {
                 _baseTextBox.HelpRequested += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.HelpRequested -= value;
             }
         }
 
-        public event EventHandler HideSelectionChanged
-        {
-            add
-            {
+        public event EventHandler HideSelectionChanged {
+            add {
                 _baseTextBox.HideSelectionChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.HideSelectionChanged -= value;
             }
         }
 
-        public new event EventHandler ImeModeChanged
-        {
-            add
-            {
+        public new event EventHandler ImeModeChanged {
+            add {
                 _baseTextBox.ImeModeChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ImeModeChanged -= value;
             }
         }
 
-        public new event InvalidateEventHandler Invalidated
-        {
-            add
-            {
+        public new event InvalidateEventHandler Invalidated {
+            add {
                 _baseTextBox.Invalidated += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Invalidated -= value;
             }
         }
 
-        public new event KeyEventHandler KeyDown
-        {
-            add
-            {
+        public new event KeyEventHandler KeyDown {
+            add {
                 _baseTextBox.KeyDown += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.KeyDown -= value;
             }
         }
 
-        public new event KeyPressEventHandler KeyPress
-        {
-            add
-            {
+        public new event KeyPressEventHandler KeyPress {
+            add {
                 _baseTextBox.KeyPress += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.KeyPress -= value;
             }
         }
 
-        public new event KeyEventHandler KeyUp
-        {
-            add
-            {
+        public new event KeyEventHandler KeyUp {
+            add {
                 _baseTextBox.KeyUp += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.KeyUp -= value;
             }
         }
 
-        public new event LayoutEventHandler Layout
-        {
-            add
-            {
+        public new event LayoutEventHandler Layout {
+            add {
                 _baseTextBox.Layout += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Layout -= value;
             }
         }
 
-        public new event EventHandler Leave
-        {
-            add
-            {
+        public new event EventHandler Leave {
+            add {
                 _baseTextBox.Leave += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Leave -= value;
             }
         }
 
-        public new event EventHandler LocationChanged
-        {
-            add
-            {
+        public new event EventHandler LocationChanged {
+            add {
                 _baseTextBox.LocationChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.LocationChanged -= value;
             }
         }
 
-        public new event EventHandler LostFocus
-        {
-            add
-            {
+        public new event EventHandler LostFocus {
+            add {
                 _baseTextBox.LostFocus += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.LostFocus -= value;
             }
         }
 
-        public new event EventHandler MarginChanged
-        {
-            add
-            {
+        public new event EventHandler MarginChanged {
+            add {
                 _baseTextBox.MarginChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MarginChanged -= value;
             }
         }
 
-        public event EventHandler ModifiedChanged
-        {
-            add
-            {
+        public event EventHandler ModifiedChanged {
+            add {
                 _baseTextBox.ModifiedChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ModifiedChanged -= value;
             }
         }
 
-        public new event EventHandler MouseCaptureChanged
-        {
-            add
-            {
+        public new event EventHandler MouseCaptureChanged {
+            add {
                 _baseTextBox.MouseCaptureChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseCaptureChanged -= value;
             }
         }
 
-        public new event MouseEventHandler MouseClick
-        {
-            add
-            {
+        public new event MouseEventHandler MouseClick {
+            add {
                 _baseTextBox.MouseClick += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseClick -= value;
             }
         }
 
-        public new event MouseEventHandler MouseDoubleClick
-        {
-            add
-            {
+        public new event MouseEventHandler MouseDoubleClick {
+            add {
                 _baseTextBox.MouseDoubleClick += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseDoubleClick -= value;
             }
         }
 
-        public new event MouseEventHandler MouseDown
-        {
-            add
-            {
+        public new event MouseEventHandler MouseDown {
+            add {
                 _baseTextBox.MouseDown += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseDown -= value;
             }
         }
 
-        public new event EventHandler MouseEnter
-        {
-            add
-            {
+        public new event EventHandler MouseEnter {
+            add {
                 _baseTextBox.MouseEnter += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseEnter -= value;
             }
         }
 
-        public new event EventHandler MouseHover
-        {
-            add
-            {
+        public new event EventHandler MouseHover {
+            add {
                 _baseTextBox.MouseHover += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseHover -= value;
             }
         }
 
-        public new event EventHandler MouseLeave
-        {
-            add
-            {
+        public new event EventHandler MouseLeave {
+            add {
                 _baseTextBox.MouseLeave += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseLeave -= value;
             }
         }
 
-        public new event MouseEventHandler MouseMove
-        {
-            add
-            {
+        public new event MouseEventHandler MouseMove {
+            add {
                 _baseTextBox.MouseMove += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseMove -= value;
             }
         }
 
-        public new event MouseEventHandler MouseUp
-        {
-            add
-            {
+        public new event MouseEventHandler MouseUp {
+            add {
                 _baseTextBox.MouseUp += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseUp -= value;
             }
         }
 
-        public new event MouseEventHandler MouseWheel
-        {
-            add
-            {
+        public new event MouseEventHandler MouseWheel {
+            add {
                 _baseTextBox.MouseWheel += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MouseWheel -= value;
             }
         }
 
-        public new event EventHandler Move
-        {
-            add
-            {
+        public new event EventHandler Move {
+            add {
                 _baseTextBox.Move += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Move -= value;
             }
         }
 
-        public event EventHandler MultilineChanged
-        {
-            add
-            {
+        public event EventHandler MultilineChanged {
+            add {
                 _baseTextBox.MultilineChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.MultilineChanged -= value;
             }
         }
 
-        public new event EventHandler PaddingChanged
-        {
-            add
-            {
+        public new event EventHandler PaddingChanged {
+            add {
                 _baseTextBox.PaddingChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.PaddingChanged -= value;
             }
         }
 
-        public new event PaintEventHandler Paint
-        {
-            add
-            {
+        public new event PaintEventHandler Paint {
+            add {
                 _baseTextBox.Paint += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Paint -= value;
             }
         }
 
-        public new event EventHandler ParentChanged
-        {
-            add
-            {
+        public new event EventHandler ParentChanged {
+            add {
                 _baseTextBox.ParentChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ParentChanged -= value;
             }
         }
 
-        public new event PreviewKeyDownEventHandler PreviewKeyDown
-        {
-            add
-            {
+        public new event PreviewKeyDownEventHandler PreviewKeyDown {
+            add {
                 _baseTextBox.PreviewKeyDown += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.PreviewKeyDown -= value;
             }
         }
 
-        public new event QueryAccessibilityHelpEventHandler QueryAccessibilityHelp
-        {
-            add
-            {
+        public new event QueryAccessibilityHelpEventHandler QueryAccessibilityHelp {
+            add {
                 _baseTextBox.QueryAccessibilityHelp += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.QueryAccessibilityHelp -= value;
             }
         }
 
-        public new event QueryContinueDragEventHandler QueryContinueDrag
-        {
-            add
-            {
+        public new event QueryContinueDragEventHandler QueryContinueDrag {
+            add {
                 _baseTextBox.QueryContinueDrag += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.QueryContinueDrag -= value;
             }
         }
 
-        public event EventHandler ReadOnlyChanged
-        {
-            add
-            {
+        public event EventHandler ReadOnlyChanged {
+            add {
                 _baseTextBox.ReadOnlyChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.ReadOnlyChanged -= value;
             }
         }
 
-        public new event EventHandler RegionChanged
-        {
-            add
-            {
+        public new event EventHandler RegionChanged {
+            add {
                 _baseTextBox.RegionChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.RegionChanged -= value;
             }
         }
 
-        public new event EventHandler Resize
-        {
-            add
-            {
+        public new event EventHandler Resize {
+            add {
                 _baseTextBox.Resize += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Resize -= value;
             }
         }
 
-        public new event EventHandler RightToLeftChanged
-        {
-            add
-            {
+        public new event EventHandler RightToLeftChanged {
+            add {
                 _baseTextBox.RightToLeftChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.RightToLeftChanged -= value;
             }
         }
 
-        public new event EventHandler SizeChanged
-        {
-            add
-            {
+        public new event EventHandler SizeChanged {
+            add {
                 _baseTextBox.SizeChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.SizeChanged -= value;
             }
         }
 
-        public new event EventHandler StyleChanged
-        {
-            add
-            {
+        public new event EventHandler StyleChanged {
+            add {
                 _baseTextBox.StyleChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.StyleChanged -= value;
             }
         }
 
-        public new event EventHandler SystemColorsChanged
-        {
-            add
-            {
+        public new event EventHandler SystemColorsChanged {
+            add {
                 _baseTextBox.SystemColorsChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.SystemColorsChanged -= value;
             }
         }
 
-        public new event EventHandler TabIndexChanged
-        {
-            add
-            {
+        public new event EventHandler TabIndexChanged {
+            add {
                 _baseTextBox.TabIndexChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.TabIndexChanged -= value;
             }
         }
 
-        public new event EventHandler TabStopChanged
-        {
-            add
-            {
+        public new event EventHandler TabStopChanged {
+            add {
                 _baseTextBox.TabStopChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.TabStopChanged -= value;
             }
         }
 
-        public event EventHandler TextAlignChanged
-        {
-            add
-            {
+        public event EventHandler TextAlignChanged {
+            add {
                 _baseTextBox.TextAlignChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.TextAlignChanged -= value;
             }
         }
 
-        public new event EventHandler TextChanged
-        {
-            add
-            {
+        public new event EventHandler TextChanged {
+            add {
                 _baseTextBox.TextChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.TextChanged -= value;
             }
         }
 
-        public new event EventHandler Validated
-        {
-            add
-            {
+        public new event EventHandler Validated {
+            add {
                 _baseTextBox.Validated += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Validated -= value;
             }
         }
 
-        public new event CancelEventHandler Validating
-        {
-            add
-            {
+        public new event CancelEventHandler Validating {
+            add {
                 _baseTextBox.Validating += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.Validating -= value;
             }
         }
 
-        public new event EventHandler VisibleChanged
-        {
-            add
-            {
+        public new event EventHandler VisibleChanged {
+            add {
                 _baseTextBox.VisibleChanged += value;
             }
-            remove
-            {
+            remove {
                 _baseTextBox.VisibleChanged -= value;
             }
         }
+
         #endregion
 
-
-        public MaterialSingleLineTextField()
-        {
+        public MaterialSingleLineTextField ( ) {
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.DoubleBuffer, true);
 
-            _animationManager = new AnimationManager
-            {
+            _animationManager = new AnimationManager {
                 Increment = 0.06,
                 AnimationType = AnimationType.EaseInOut,
                 InterruptAnimation = false
             };
             _animationManager.OnAnimationProgress += sender => Invalidate();
 
-            _baseTextBox = new BaseTextBox
-            {
+            _baseTextBox = new BaseTextBox {
                 BorderStyle = BorderStyle.None,
                 Font = SkinManager.ROBOTO_REGULAR_11,
                 ForeColor = SkinManager.GetPrimaryTextColor(),
@@ -964,15 +747,13 @@ namespace MaterialSkin.Controls
                 Height = Height - 5
             };
 
-            if (!Controls.Contains(_baseTextBox) && !DesignMode)
-            {
+            if (!Controls.Contains(_baseTextBox) && !DesignMode) {
                 Controls.Add(_baseTextBox);
             }
 
-            _baseTextBox.GotFocus += (sender, args) => _animationManager.StartNewAnimation(AnimationDirection.In);
-            _baseTextBox.LostFocus += (sender, args) => _animationManager.StartNewAnimation(AnimationDirection.Out);
-            BackColorChanged += (sender, args) =>
-            {
+            _baseTextBox.GotFocus += ( sender, args ) => _animationManager.StartNewAnimation(AnimationDirection.In);
+            _baseTextBox.LostFocus += ( sender, args ) => _animationManager.StartNewAnimation(AnimationDirection.Out);
+            BackColorChanged += ( sender, args ) => {
                 _baseTextBox.BackColor = BackColor;
                 _baseTextBox.ForeColor = SkinManager.GetPrimaryTextColor();
             };
@@ -982,20 +763,17 @@ namespace MaterialSkin.Controls
             this.TabStop = false;
         }
 
-        protected override void OnPaint(PaintEventArgs pevent)
-        {
+        protected override void OnPaint ( PaintEventArgs pevent ) {
             var g = pevent.Graphics;
             g.Clear(Parent.BackColor);
 
             var lineY = _baseTextBox.Bottom + 3;
 
-            if (!_animationManager.IsAnimating())
-            {
+            if (!_animationManager.IsAnimating()) {
                 //No animation
                 g.FillRectangle(_baseTextBox.Focused ? SkinManager.ColorScheme.PrimaryBrush : SkinManager.GetDividersBrush(), _baseTextBox.Location.X, lineY, _baseTextBox.Width, _baseTextBox.Focused ? 2 : 1);
             }
-            else
-            {
+            else {
                 //Animate
                 int animationWidth = (int)(_baseTextBox.Width * _animationManager.GetProgress());
                 int halfAnimationWidth = animationWidth / 2;
@@ -1009,8 +787,7 @@ namespace MaterialSkin.Controls
             }
         }
 
-        protected override void OnResize(EventArgs e)
-        {
+        protected override void OnResize ( EventArgs e ) {
             base.OnResize(e);
 
             _baseTextBox.Location = new Point(0, 0);
@@ -1019,18 +796,17 @@ namespace MaterialSkin.Controls
             Height = _baseTextBox.Height + 5;
         }
 
-        protected override void OnCreateControl()
-        {
+        protected override void OnCreateControl ( ) {
             base.OnCreateControl();
 
             _baseTextBox.BackColor = Parent.BackColor;
             _baseTextBox.ForeColor = SkinManager.GetPrimaryTextColor();
         }
 
-        private class BaseTextBox : TextBox
-        {
+        private class BaseTextBox : TextBox {
+
             [DllImport("user32.dll", CharSet = CharSet.Auto)]
-            private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, string lParam);
+            private static extern IntPtr SendMessage ( IntPtr hWnd, int msg, int wParam, string lParam );
 
             private const int EM_SETCUEBANNER = 0x1501;
             private const char EmptyChar = (char)0;
@@ -1038,56 +814,47 @@ namespace MaterialSkin.Controls
             private const char NonVisualStylePasswordChar = '\u002A';
 
             private string hint = string.Empty;
-            public string Hint
-            {
+
+            public string Hint {
                 get { return hint; }
-                set
-                {
+                set {
                     hint = value;
                     SendMessage(Handle, EM_SETCUEBANNER, (int)IntPtr.Zero, Hint);
                 }
             }
 
             private char _passwordChar = EmptyChar;
-            public new char PasswordChar
-            {
+
+            public new char PasswordChar {
                 get { return _passwordChar; }
-                set
-                {
+                set {
                     _passwordChar = value;
                     SetBasePasswordChar();
                 }
             }
 
-            public new void SelectAll()
-            {
-                BeginInvoke((MethodInvoker)delegate ()
-                {
+            public new void SelectAll ( ) {
+                BeginInvoke((MethodInvoker)delegate ( ) {
                     base.Focus();
                     base.SelectAll();
                 });
             }
 
-            public new void Focus()
-            {
-                BeginInvoke((MethodInvoker)delegate ()
-                {
+            public new void Focus ( ) {
+                BeginInvoke((MethodInvoker)delegate ( ) {
                     base.Focus();
                 });
             }
 
             private char _useSystemPasswordChar = EmptyChar;
-            public new bool UseSystemPasswordChar
-            {
+
+            public new bool UseSystemPasswordChar {
                 get { return _useSystemPasswordChar != EmptyChar; }
-                set
-                {
-                    if (value)
-                    {
+                set {
+                    if (value) {
                         _useSystemPasswordChar = Application.RenderWithVisualStyles ? VisualStylePasswordChar : NonVisualStylePasswordChar;
                     }
-                    else
-                    {
+                    else {
                         _useSystemPasswordChar = EmptyChar;
                     }
 
@@ -1095,13 +862,11 @@ namespace MaterialSkin.Controls
                 }
             }
 
-            private void SetBasePasswordChar()
-            {
+            private void SetBasePasswordChar ( ) {
                 base.PasswordChar = UseSystemPasswordChar ? _useSystemPasswordChar : _passwordChar;
             }
 
-            public BaseTextBox()
-            {
+            public BaseTextBox ( ) {
                 MaterialContextMenuStrip cms = new TextBoxContextMenuStrip();
                 cms.Opening += ContextMenuStripOnOpening;
                 cms.OnItemClickStart += ContextMenuStripOnItemClickStart;
@@ -1109,36 +874,37 @@ namespace MaterialSkin.Controls
                 ContextMenuStrip = cms;
             }
 
-            private void ContextMenuStripOnItemClickStart(object sender, ToolStripItemClickedEventArgs toolStripItemClickedEventArgs)
-            {
-                switch (toolStripItemClickedEventArgs.ClickedItem.Text)
-                {
+            private void ContextMenuStripOnItemClickStart ( object sender, ToolStripItemClickedEventArgs toolStripItemClickedEventArgs ) {
+                switch (toolStripItemClickedEventArgs.ClickedItem.Text) {
                     case "Undo":
                         Undo();
                         break;
+
                     case "Cut":
                         Cut();
                         break;
+
                     case "Copy":
                         Copy();
                         break;
+
                     case "Paste":
                         Paste();
                         break;
+
                     case "Delete":
                         SelectedText = string.Empty;
                         break;
+
                     case "Select All":
                         SelectAll();
                         break;
                 }
             }
 
-            private void ContextMenuStripOnOpening(object sender, CancelEventArgs cancelEventArgs)
-            {
+            private void ContextMenuStripOnOpening ( object sender, CancelEventArgs cancelEventArgs ) {
                 var strip = sender as TextBoxContextMenuStrip;
-                if (strip != null)
-                {
+                if (strip != null) {
                     strip.Undo.Enabled = CanUndo;
                     strip.Cut.Enabled = !string.IsNullOrEmpty(SelectedText);
                     strip.Copy.Enabled = !string.IsNullOrEmpty(SelectedText);
@@ -1149,8 +915,7 @@ namespace MaterialSkin.Controls
             }
         }
 
-        private class TextBoxContextMenuStrip : MaterialContextMenuStrip
-        {
+        private class TextBoxContextMenuStrip : MaterialContextMenuStrip {
             public readonly ToolStripItem Undo = new MaterialToolStripMenuItem { Text = "Undo" };
             public readonly ToolStripItem Seperator1 = new ToolStripSeparator();
             public readonly ToolStripItem Cut = new MaterialToolStripMenuItem { Text = "Cut" };
@@ -1160,9 +925,8 @@ namespace MaterialSkin.Controls
             public readonly ToolStripItem Seperator2 = new ToolStripSeparator();
             public readonly ToolStripItem SelectAll = new MaterialToolStripMenuItem { Text = "Select All" };
 
-            public TextBoxContextMenuStrip()
-            {
-                Items.AddRange(new[]
+            public TextBoxContextMenuStrip ( ) {
+                Items.AddRange(new []
                 {
                     Undo,
                     Seperator1,
