@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GeneralAdapters.Resources {
+namespace BBR_Calibrator.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace GeneralAdapters.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalResources {
+    internal class MainResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalResources() {
+        internal MainResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace GeneralAdapters.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GeneralAdapters.Resources.GlobalResources", typeof(GlobalResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BBR_Calibrator.Resources.MainResources", typeof(MainResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,20 @@ namespace GeneralAdapters.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 115200.
+        ///   Looks up a localized string similar to 25.
         /// </summary>
-        internal static string SerialPortBaud {
+        internal static string MaxLogDataLines {
             get {
-                return ResourceManager.GetString("SerialPortBaud", resourceCulture);
+                return ResourceManager.GetString("MaxLogDataLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 200.
+        /// </summary>
+        internal static string MaxLogEventLines {
+            get {
+                return ResourceManager.GetString("MaxLogEventLines", resourceCulture);
             }
         }
     }

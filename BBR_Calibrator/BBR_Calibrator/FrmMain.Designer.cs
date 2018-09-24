@@ -24,61 +24,259 @@
 		/// </summary>
 		private void InitializeComponent ( ) {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
-            this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.TextViewLogData = new System.Windows.Forms.RichTextBox();
+            this.TabSelectorMain = new MaterialSkin.Controls.MaterialTabSelector();
+            this.TabControlMain = new MaterialSkin.Controls.MaterialTabControl();
+            this.TabHome = new System.Windows.Forms.TabPage();
+            this.btnOpenPort = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.btnClosePort = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.TabLog = new System.Windows.Forms.TabPage();
+            this.TabControlLog = new MaterialSkin.Controls.MaterialTabControl();
+            this.TabPageLogData = new System.Windows.Forms.TabPage();
+            this.CheckBoxEnableLogging = new MaterialSkin.Controls.MaterialCheckBox();
+            this.TabPageLogEvents = new System.Windows.Forms.TabPage();
+            this.TextViewEvents = new System.Windows.Forms.RichTextBox();
+            this.TabSelectorLog = new MaterialSkin.Controls.MaterialTabSelector();
+            this.TabControlMain.SuspendLayout();
+            this.TabHome.SuspendLayout();
+            this.TabLog.SuspendLayout();
+            this.TabControlLog.SuspendLayout();
+            this.TabPageLogData.SuspendLayout();
+            this.TabPageLogEvents.SuspendLayout();
             this.SuspendLayout();
             // 
-            // materialLabel1
+            // TextViewLogData
             // 
-            this.materialLabel1.AutoSize = true;
-            this.materialLabel1.Depth = 0;
-            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 11F);
-            this.materialLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel1.Location = new System.Drawing.Point(37, 118);
-            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel1.Name = "materialLabel1";
-            this.materialLabel1.Size = new System.Drawing.Size(108, 19);
-            this.materialLabel1.TabIndex = 0;
-            this.materialLabel1.Text = "materialLabel1";
+            this.TextViewLogData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextViewLogData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.TextViewLogData.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.TextViewLogData.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.TextViewLogData.DetectUrls = false;
+            this.TextViewLogData.EnableAutoDragDrop = true;
+            this.TextViewLogData.Font = new System.Drawing.Font("Courier New", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextViewLogData.ForeColor = System.Drawing.Color.White;
+            this.TextViewLogData.Location = new System.Drawing.Point(0, 6);
+            this.TextViewLogData.MaxLength = 1000;
+            this.TextViewLogData.Name = "TextViewLogData";
+            this.TextViewLogData.ShortcutsEnabled = false;
+            this.TextViewLogData.Size = new System.Drawing.Size(780, 384);
+            this.TextViewLogData.TabIndex = 0;
+            this.TextViewLogData.Text = "";
             // 
-            // materialFlatButton1
+            // TabSelectorMain
             // 
-            this.materialFlatButton1.AutoSize = true;
-            this.materialFlatButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialFlatButton1.Depth = 0;
-            this.materialFlatButton1.Icon = null;
-            this.materialFlatButton1.Location = new System.Drawing.Point(337, 335);
-            this.materialFlatButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton1.Name = "materialFlatButton1";
-            this.materialFlatButton1.Primary = false;
-            this.materialFlatButton1.Size = new System.Drawing.Size(181, 36);
-            this.materialFlatButton1.TabIndex = 1;
-            this.materialFlatButton1.Text = "materialFlatButton1";
-            this.materialFlatButton1.UseVisualStyleBackColor = true;
-            this.materialFlatButton1.Click += new System.EventHandler(this.materialFlatButton1_Click);
+            this.TabSelectorMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TabSelectorMain.BaseTabControl = this.TabControlMain;
+            this.TabSelectorMain.Depth = 0;
+            this.TabSelectorMain.Location = new System.Drawing.Point(-1, 63);
+            this.TabSelectorMain.MouseState = MaterialSkin.MouseState.HOVER;
+            this.TabSelectorMain.Name = "TabSelectorMain";
+            this.TabSelectorMain.Size = new System.Drawing.Size(815, 37);
+            this.TabSelectorMain.TabIndex = 5;
+            this.TabSelectorMain.Text = "materialTabSelector1";
+            // 
+            // TabControlMain
+            // 
+            this.TabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TabControlMain.Controls.Add(this.TabHome);
+            this.TabControlMain.Controls.Add(this.TabLog);
+            this.TabControlMain.Depth = 0;
+            this.TabControlMain.Location = new System.Drawing.Point(-1, 106);
+            this.TabControlMain.MouseState = MaterialSkin.MouseState.HOVER;
+            this.TabControlMain.Name = "TabControlMain";
+            this.TabControlMain.SelectedIndex = 0;
+            this.TabControlMain.Size = new System.Drawing.Size(815, 529);
+            this.TabControlMain.TabIndex = 6;
+            // 
+            // TabHome
+            // 
+            this.TabHome.Controls.Add(this.btnOpenPort);
+            this.TabHome.Controls.Add(this.btnClosePort);
+            this.TabHome.Location = new System.Drawing.Point(4, 24);
+            this.TabHome.Name = "TabHome";
+            this.TabHome.Padding = new System.Windows.Forms.Padding(3);
+            this.TabHome.Size = new System.Drawing.Size(807, 501);
+            this.TabHome.TabIndex = 0;
+            this.TabHome.Text = "Home";
+            this.TabHome.UseVisualStyleBackColor = true;
+            // 
+            // btnOpenPort
+            // 
+            this.btnOpenPort.AutoSize = true;
+            this.btnOpenPort.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnOpenPort.Depth = 0;
+            this.btnOpenPort.Icon = null;
+            this.btnOpenPort.Location = new System.Drawing.Point(79, 24);
+            this.btnOpenPort.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnOpenPort.Name = "btnOpenPort";
+            this.btnOpenPort.Primary = true;
+            this.btnOpenPort.Size = new System.Drawing.Size(57, 36);
+            this.btnOpenPort.TabIndex = 1;
+            this.btnOpenPort.Text = "open";
+            this.btnOpenPort.UseVisualStyleBackColor = true;
+            this.btnOpenPort.Click += new System.EventHandler(this.btnOpenPort_Click);
+            // 
+            // btnClosePort
+            // 
+            this.btnClosePort.AutoSize = true;
+            this.btnClosePort.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnClosePort.Depth = 0;
+            this.btnClosePort.Icon = null;
+            this.btnClosePort.Location = new System.Drawing.Point(10, 24);
+            this.btnClosePort.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnClosePort.Name = "btnClosePort";
+            this.btnClosePort.Primary = true;
+            this.btnClosePort.Size = new System.Drawing.Size(63, 36);
+            this.btnClosePort.TabIndex = 0;
+            this.btnClosePort.Text = "close";
+            this.btnClosePort.UseVisualStyleBackColor = true;
+            this.btnClosePort.Click += new System.EventHandler(this.btnClosePort_Click);
+            // 
+            // TabLog
+            // 
+            this.TabLog.Controls.Add(this.TabControlLog);
+            this.TabLog.Controls.Add(this.TabSelectorLog);
+            this.TabLog.Location = new System.Drawing.Point(4, 24);
+            this.TabLog.Name = "TabLog";
+            this.TabLog.Padding = new System.Windows.Forms.Padding(3);
+            this.TabLog.Size = new System.Drawing.Size(807, 501);
+            this.TabLog.TabIndex = 1;
+            this.TabLog.Text = "Log";
+            this.TabLog.UseVisualStyleBackColor = true;
+            // 
+            // TabControlLog
+            // 
+            this.TabControlLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TabControlLog.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.TabControlLog.Controls.Add(this.TabPageLogData);
+            this.TabControlLog.Controls.Add(this.TabPageLogEvents);
+            this.TabControlLog.Depth = 0;
+            this.TabControlLog.Location = new System.Drawing.Point(9, 46);
+            this.TabControlLog.MouseState = MaterialSkin.MouseState.HOVER;
+            this.TabControlLog.Name = "TabControlLog";
+            this.TabControlLog.SelectedIndex = 0;
+            this.TabControlLog.Size = new System.Drawing.Size(788, 449);
+            this.TabControlLog.TabIndex = 7;
+            // 
+            // TabPageLogData
+            // 
+            this.TabPageLogData.Controls.Add(this.TextViewLogData);
+            this.TabPageLogData.Controls.Add(this.CheckBoxEnableLogging);
+            this.TabPageLogData.Location = new System.Drawing.Point(4, 27);
+            this.TabPageLogData.Name = "TabPageLogData";
+            this.TabPageLogData.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageLogData.Size = new System.Drawing.Size(780, 418);
+            this.TabPageLogData.TabIndex = 0;
+            this.TabPageLogData.Text = "DATA";
+            this.TabPageLogData.UseVisualStyleBackColor = true;
+            // 
+            // CheckBoxEnableLogging
+            // 
+            this.CheckBoxEnableLogging.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CheckBoxEnableLogging.AutoSize = true;
+            this.CheckBoxEnableLogging.Depth = 0;
+            this.CheckBoxEnableLogging.Font = new System.Drawing.Font("Roboto", 10F);
+            this.CheckBoxEnableLogging.Location = new System.Drawing.Point(3, 393);
+            this.CheckBoxEnableLogging.Margin = new System.Windows.Forms.Padding(0);
+            this.CheckBoxEnableLogging.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.CheckBoxEnableLogging.MouseState = MaterialSkin.MouseState.HOVER;
+            this.CheckBoxEnableLogging.Name = "CheckBoxEnableLogging";
+            this.CheckBoxEnableLogging.Ripple = true;
+            this.CheckBoxEnableLogging.Size = new System.Drawing.Size(120, 30);
+            this.CheckBoxEnableLogging.TabIndex = 5;
+            this.CheckBoxEnableLogging.Text = "enable logging";
+            this.CheckBoxEnableLogging.UseVisualStyleBackColor = true;
+            // 
+            // TabPageLogEvents
+            // 
+            this.TabPageLogEvents.Controls.Add(this.TextViewEvents);
+            this.TabPageLogEvents.Location = new System.Drawing.Point(4, 27);
+            this.TabPageLogEvents.Name = "TabPageLogEvents";
+            this.TabPageLogEvents.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageLogEvents.Size = new System.Drawing.Size(780, 418);
+            this.TabPageLogEvents.TabIndex = 1;
+            this.TabPageLogEvents.Text = "EVENTS";
+            this.TabPageLogEvents.UseVisualStyleBackColor = true;
+            // 
+            // TextViewEvents
+            // 
+            this.TextViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextViewEvents.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.TextViewEvents.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.TextViewEvents.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.TextViewEvents.Font = new System.Drawing.Font("Monaco", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextViewEvents.ForeColor = System.Drawing.Color.White;
+            this.TextViewEvents.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.TextViewEvents.Location = new System.Drawing.Point(0, 0);
+            this.TextViewEvents.Margin = new System.Windows.Forms.Padding(0);
+            this.TextViewEvents.MaxLength = 2000;
+            this.TextViewEvents.Name = "TextViewEvents";
+            this.TextViewEvents.ShortcutsEnabled = false;
+            this.TextViewEvents.Size = new System.Drawing.Size(780, 420);
+            this.TextViewEvents.TabIndex = 2;
+            this.TextViewEvents.Text = "";
+            // 
+            // TabSelectorLog
+            // 
+            this.TabSelectorLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TabSelectorLog.BaseTabControl = this.TabControlLog;
+            this.TabSelectorLog.Depth = 0;
+            this.TabSelectorLog.Location = new System.Drawing.Point(548, 6);
+            this.TabSelectorLog.MouseState = MaterialSkin.MouseState.HOVER;
+            this.TabSelectorLog.Name = "TabSelectorLog";
+            this.TabSelectorLog.Size = new System.Drawing.Size(249, 37);
+            this.TabSelectorLog.TabIndex = 6;
+            this.TabSelectorLog.Text = "TabSelectorLog";
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(844, 567);
-            this.Controls.Add(this.materialFlatButton1);
-            this.Controls.Add(this.materialLabel1);
+            this.ClientSize = new System.Drawing.Size(812, 647);
+            this.Controls.Add(this.TabControlMain);
+            this.Controls.Add(this.TabSelectorMain);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmMain";
             this.Text = "BBR Calibrator";
+            this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.TabControlMain.ResumeLayout(false);
+            this.TabHome.ResumeLayout(false);
+            this.TabHome.PerformLayout();
+            this.TabLog.ResumeLayout(false);
+            this.TabControlLog.ResumeLayout(false);
+            this.TabPageLogData.ResumeLayout(false);
+            this.TabPageLogData.PerformLayout();
+            this.TabPageLogEvents.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
 		}
 
         #endregion
-
-        private MaterialSkin.Controls.MaterialLabel materialLabel1;
-        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton1;
+        private System.Windows.Forms.RichTextBox TextViewLogData;
+        private MaterialSkin.Controls.MaterialTabSelector TabSelectorMain;
+        private MaterialSkin.Controls.MaterialTabControl TabControlMain;
+        private System.Windows.Forms.TabPage TabHome;
+        private System.Windows.Forms.TabPage TabLog;
+        private MaterialSkin.Controls.MaterialCheckBox CheckBoxEnableLogging;
+        private MaterialSkin.Controls.MaterialRaisedButton btnOpenPort;
+        private MaterialSkin.Controls.MaterialRaisedButton btnClosePort;
+        private MaterialSkin.Controls.MaterialTabControl TabControlLog;
+        private System.Windows.Forms.TabPage TabPageLogData;
+        private System.Windows.Forms.TabPage TabPageLogEvents;
+        private MaterialSkin.Controls.MaterialTabSelector TabSelectorLog;
+        private System.Windows.Forms.RichTextBox TextViewEvents;
     }
 }
 

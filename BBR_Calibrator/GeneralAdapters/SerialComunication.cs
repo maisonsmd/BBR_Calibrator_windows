@@ -1,51 +1,93 @@
 ﻿using System;
 using System.IO.Ports;
-using System.Threading;
 
 namespace GeneralAdapters {
 
     public class SerialComunication {
         private SerialPort serial;
 
-        public delegate void OnDataReceivedHandler ( string myString );
+        public delegate void OnDataReceivedHandler ( string data );
 
-        private OnDataReceivedHandler OnDataReceived;
+        public delegate void OnErrorOccurredHandler ( string errorString );
 
         public event OnDataReceivedHandler DataReceived;
+
+        public event OnErrorOccurredHandler ErrorOccurred;
 
         /// <summary>
         /// create a new instance
         /// </summary>
         private SerialComunication ( ) {
             serial = new SerialPort();
-            OnDataReceived = new OnDataReceivedHandler(ProcessData);
-            //OnDataReceived = new OnDataReceivedHandler(DumpCallback);
-
-            serial.BaudRate = int.Parse(Resources.GlobalResources.SerialPortBaud);
+            serial.BaudRate = int.Parse(Resources.GeneralAdaptersResources.SerialPortBaud);
             serial.RtsEnable = true;
             serial.DtrEnable = true;
             serial.PortName = "COM9";
+            serial.ReadTimeout = 3;
             serial.DataReceived += Serial_DataReceived;
             serial.Open();
         }
-        
+
         private void Serial_DataReceived ( object sender, SerialDataReceivedEventArgs e ) {
-            //syncronous call
-            //OnDataReceived?.Invoke(serial.ReadLine());
-            //asyncronous call
-            OnDataReceived?.BeginInvoke(serial.ReadLine(), HandlerResult, null);
+            if (serial.BytesToRead < 1) {
+                return;
+            }
+            int size = serial.ReadByte();
+            Console.WriteLine(size);
+            byte [] buffer = new byte [size + 1];
+
+            int index = 0;
+            try {
+                while (index < size && serial.IsOpen) {
+                    buffer [index++] = (byte)serial.ReadByte();
+                }
+                ProcessData(buffer, size);
+            }
+            catch (Exception exception) {
+                Console.WriteLine(exception.ToString());
+                ErrorOccurred?.BeginInvoke(exception.ToString(), ErrorOccurredInvokeCallback, null);
+                //ErrorOccurred?.BeginInvoke("Exception caused the SerialPort to close!", ErrorOccurredInvokeCallback, null);
+                return;
+            }
         }
 
-        private void HandlerResult ( IAsyncResult ar ) {
-            Console.Write("result: ");
-            Console.WriteLine(ar.IsCompleted);
+        private void ErrorOccurredInvokeCallback ( IAsyncResult ar ) {
+            ErrorOccurred?.EndInvoke(ar);
         }
 
-        private void ProcessData ( string data ) {
-            Console.Write("\ndata: ");
-            Thread.Sleep(500);
-            Console.WriteLine(data);
-            DataReceived?.BeginInvoke(data, HandlerResult, null);
+        private void DataReceivedInvokeCallback ( IAsyncResult ar ) {
+            DataReceived?.EndInvoke(ar);
+        }
+
+        private int errorCount = 0;
+
+        private void ProcessData ( byte [] buffer, int size ) {
+            byte [] tempBuffer = new byte [size];
+            Buffer.BlockCopy(buffer, 0, tempBuffer, 0, size);
+            if (tempBuffer [size - 1] != 0xFF) {
+                //Console.WriteLine("Error");
+                errorCount++;
+                return;
+            }
+            string data = string.Format("{0} ", size);
+            for (int i = 0; i < size; i++) {
+                if (tempBuffer [i] < 0x10)
+                    data += string.Format("0{0:X} ", tempBuffer [i]);
+                else
+                    data += string.Format("{0:X} ", tempBuffer [i]);
+            }
+            data += string.Format("{0}\n", errorCount);
+            DataReceived?.BeginInvoke(data, DataReceivedInvokeCallback, null);
+        }
+
+        public void Close ( ) {
+            if (serial.IsOpen)
+                serial.Close();
+        }
+
+        public void Open ( ) {
+            if (!serial.IsOpen)
+                serial.Open();
         }
 
         /// <summary>
