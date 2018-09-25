@@ -32,17 +32,17 @@
             this.btnClosePort = new MaterialSkin.Controls.MaterialRaisedButton();
             this.TabPageLog = new System.Windows.Forms.TabPage();
             this.TabControlLog = new MaterialSkin.Controls.MaterialTabControl();
-            this.TabPageLogData = new System.Windows.Forms.TabPage();
-            this.CheckBoxEnableLogging = new MaterialSkin.Controls.MaterialCheckBox();
             this.TabPageLogEvents = new System.Windows.Forms.TabPage();
             this.TextViewEvents = new System.Windows.Forms.RichTextBox();
+            this.TabPageLogData = new System.Windows.Forms.TabPage();
+            this.CheckBoxEnableLogging = new MaterialSkin.Controls.MaterialCheckBox();
             this.TabSelectorLog = new MaterialSkin.Controls.MaterialTabSelector();
             this.TabControlMain.SuspendLayout();
             this.TabPageHome.SuspendLayout();
             this.TabPageLog.SuspendLayout();
             this.TabControlLog.SuspendLayout();
-            this.TabPageLogData.SuspendLayout();
             this.TabPageLogEvents.SuspendLayout();
+            this.TabPageLogData.SuspendLayout();
             this.SuspendLayout();
             // 
             // TextViewLogData
@@ -55,13 +55,13 @@
             this.TextViewLogData.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.TextViewLogData.DetectUrls = false;
             this.TextViewLogData.EnableAutoDragDrop = true;
-            this.TextViewLogData.Font = new System.Drawing.Font("Courier New", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextViewLogData.Font = new System.Drawing.Font("Courier New", 10F);
             this.TextViewLogData.ForeColor = System.Drawing.Color.White;
             this.TextViewLogData.Location = new System.Drawing.Point(0, 6);
             this.TextViewLogData.MaxLength = 1000;
             this.TextViewLogData.Name = "TextViewLogData";
             this.TextViewLogData.ShortcutsEnabled = false;
-            this.TextViewLogData.Size = new System.Drawing.Size(780, 386);
+            this.TextViewLogData.Size = new System.Drawing.Size(780, 367);
             this.TextViewLogData.TabIndex = 0;
             this.TextViewLogData.Text = "";
             // 
@@ -165,35 +165,6 @@
             this.TabControlLog.Size = new System.Drawing.Size(788, 449);
             this.TabControlLog.TabIndex = 7;
             // 
-            // TabPageLogData
-            // 
-            this.TabPageLogData.Controls.Add(this.TextViewLogData);
-            this.TabPageLogData.Controls.Add(this.CheckBoxEnableLogging);
-            this.TabPageLogData.Location = new System.Drawing.Point(4, 27);
-            this.TabPageLogData.Name = "TabPageLogData";
-            this.TabPageLogData.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageLogData.Size = new System.Drawing.Size(780, 418);
-            this.TabPageLogData.TabIndex = 0;
-            this.TabPageLogData.Text = "DATA";
-            this.TabPageLogData.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxEnableLogging
-            // 
-            this.CheckBoxEnableLogging.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CheckBoxEnableLogging.AutoSize = true;
-            this.CheckBoxEnableLogging.Depth = 0;
-            this.CheckBoxEnableLogging.Font = new System.Drawing.Font("Roboto", 10F);
-            this.CheckBoxEnableLogging.Location = new System.Drawing.Point(3, 395);
-            this.CheckBoxEnableLogging.Margin = new System.Windows.Forms.Padding(0);
-            this.CheckBoxEnableLogging.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.CheckBoxEnableLogging.MouseState = MaterialSkin.MouseState.HOVER;
-            this.CheckBoxEnableLogging.Name = "CheckBoxEnableLogging";
-            this.CheckBoxEnableLogging.Ripple = true;
-            this.CheckBoxEnableLogging.Size = new System.Drawing.Size(120, 30);
-            this.CheckBoxEnableLogging.TabIndex = 5;
-            this.CheckBoxEnableLogging.Text = "enable logging";
-            this.CheckBoxEnableLogging.UseVisualStyleBackColor = true;
-            // 
             // TabPageLogEvents
             // 
             this.TabPageLogEvents.Controls.Add(this.TextViewEvents);
@@ -221,9 +192,38 @@
             this.TextViewEvents.MaxLength = 2000;
             this.TextViewEvents.Name = "TextViewEvents";
             this.TextViewEvents.ShortcutsEnabled = false;
-            this.TextViewEvents.Size = new System.Drawing.Size(780, 422);
+            this.TextViewEvents.Size = new System.Drawing.Size(780, 424);
             this.TextViewEvents.TabIndex = 2;
             this.TextViewEvents.Text = "";
+            // 
+            // TabPageLogData
+            // 
+            this.TabPageLogData.Controls.Add(this.TextViewLogData);
+            this.TabPageLogData.Controls.Add(this.CheckBoxEnableLogging);
+            this.TabPageLogData.Location = new System.Drawing.Point(4, 27);
+            this.TabPageLogData.Name = "TabPageLogData";
+            this.TabPageLogData.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageLogData.Size = new System.Drawing.Size(780, 418);
+            this.TabPageLogData.TabIndex = 0;
+            this.TabPageLogData.Text = "DATA";
+            this.TabPageLogData.UseVisualStyleBackColor = true;
+            // 
+            // CheckBoxEnableLogging
+            // 
+            this.CheckBoxEnableLogging.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CheckBoxEnableLogging.AutoSize = true;
+            this.CheckBoxEnableLogging.Depth = 0;
+            this.CheckBoxEnableLogging.Font = new System.Drawing.Font("Roboto", 10F);
+            this.CheckBoxEnableLogging.Location = new System.Drawing.Point(3, 385);
+            this.CheckBoxEnableLogging.Margin = new System.Windows.Forms.Padding(0);
+            this.CheckBoxEnableLogging.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.CheckBoxEnableLogging.MouseState = MaterialSkin.MouseState.HOVER;
+            this.CheckBoxEnableLogging.Name = "CheckBoxEnableLogging";
+            this.CheckBoxEnableLogging.Ripple = true;
+            this.CheckBoxEnableLogging.Size = new System.Drawing.Size(120, 30);
+            this.CheckBoxEnableLogging.TabIndex = 5;
+            this.CheckBoxEnableLogging.Text = "enable logging";
+            this.CheckBoxEnableLogging.UseVisualStyleBackColor = true;
             // 
             // TabSelectorLog
             // 
@@ -231,10 +231,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabSelectorLog.BaseTabControl = this.TabControlLog;
             this.TabSelectorLog.Depth = 0;
-            this.TabSelectorLog.Location = new System.Drawing.Point(548, 6);
+            this.TabSelectorLog.Location = new System.Drawing.Point(570, 6);
             this.TabSelectorLog.MouseState = MaterialSkin.MouseState.HOVER;
             this.TabSelectorLog.Name = "TabSelectorLog";
-            this.TabSelectorLog.Size = new System.Drawing.Size(249, 37);
+            this.TabSelectorLog.Size = new System.Drawing.Size(220, 37);
             this.TabSelectorLog.TabIndex = 6;
             this.TabSelectorLog.Text = "TabSelectorLog";
             // 
@@ -256,9 +256,9 @@
             this.TabPageHome.PerformLayout();
             this.TabPageLog.ResumeLayout(false);
             this.TabControlLog.ResumeLayout(false);
+            this.TabPageLogEvents.ResumeLayout(false);
             this.TabPageLogData.ResumeLayout(false);
             this.TabPageLogData.PerformLayout();
-            this.TabPageLogEvents.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}

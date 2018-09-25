@@ -153,16 +153,17 @@ namespace BBR_Calibrator {
         }
 
         private void FrmMain_Load ( object sender, EventArgs e ) {
+            SerialComunication.Open();
         }
 
         private void BtnClosePort_Click ( object sender, EventArgs e ) {
-            SerialComunication.Instance.Close();
-            WriteEvent("Serial port closed", EventType.Info);
+            if (SerialComunication.Instance.Close())
+                WriteEvent("Serial port closed", EventType.Info);
         }
 
         private void BtnOpenPort_Click ( object sender, EventArgs e ) {
-            SerialComunication.Instance.Open();
-            WriteEvent("Serial port opened", EventType.Info);
+            if (SerialComunication.Instance.Open())
+                WriteEvent("Serial port opened", EventType.Info);
         }
     }
 }

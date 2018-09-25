@@ -25,7 +25,6 @@ namespace GeneralAdapters {
             serial.PortName = "COM9";
             serial.ReadTimeout = 3;
             serial.DataReceived += Serial_DataReceived;
-            serial.Open();
         }
 
         private void Serial_DataReceived ( object sender, SerialDataReceivedEventArgs e ) {
@@ -80,14 +79,28 @@ namespace GeneralAdapters {
             DataReceived?.BeginInvoke(data, DataReceivedInvokeCallback, null);
         }
 
-        public void Close ( ) {
-            if (serial.IsOpen)
-                serial.Close();
+        public bool Close ( ) {
+            try {
+                if (serial.IsOpen)
+                    serial.Close();
+            }
+            catch (Exception exception) {
+                ErrorOccurred?.BeginInvoke(exception.ToString(), ErrorOccurredInvokeCallback, null);
+                return false;
+            }
+            return true;
         }
 
-        public void Open ( ) {
-            if (!serial.IsOpen)
-                serial.Open();
+        public bool Open ( ) {
+            try {
+                if (!serial.IsOpen)
+                    serial.Open();
+            }
+            catch (Exception exception) {
+                ErrorOccurred?.BeginInvoke(exception.ToString(), ErrorOccurredInvokeCallback, null);
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
