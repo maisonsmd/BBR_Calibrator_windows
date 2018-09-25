@@ -27,10 +27,10 @@
             this.TextViewLogData = new System.Windows.Forms.RichTextBox();
             this.TabSelectorMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.TabControlMain = new MaterialSkin.Controls.MaterialTabControl();
-            this.TabHome = new System.Windows.Forms.TabPage();
+            this.TabPageHome = new System.Windows.Forms.TabPage();
             this.btnOpenPort = new MaterialSkin.Controls.MaterialRaisedButton();
             this.btnClosePort = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.TabLog = new System.Windows.Forms.TabPage();
+            this.TabPageLog = new System.Windows.Forms.TabPage();
             this.TabControlLog = new MaterialSkin.Controls.MaterialTabControl();
             this.TabPageLogData = new System.Windows.Forms.TabPage();
             this.CheckBoxEnableLogging = new MaterialSkin.Controls.MaterialCheckBox();
@@ -38,8 +38,8 @@
             this.TextViewEvents = new System.Windows.Forms.RichTextBox();
             this.TabSelectorLog = new MaterialSkin.Controls.MaterialTabSelector();
             this.TabControlMain.SuspendLayout();
-            this.TabHome.SuspendLayout();
-            this.TabLog.SuspendLayout();
+            this.TabPageHome.SuspendLayout();
+            this.TabPageLog.SuspendLayout();
             this.TabControlLog.SuspendLayout();
             this.TabPageLogData.SuspendLayout();
             this.TabPageLogEvents.SuspendLayout();
@@ -61,7 +61,7 @@
             this.TextViewLogData.MaxLength = 1000;
             this.TextViewLogData.Name = "TextViewLogData";
             this.TextViewLogData.ShortcutsEnabled = false;
-            this.TextViewLogData.Size = new System.Drawing.Size(780, 384);
+            this.TextViewLogData.Size = new System.Drawing.Size(780, 386);
             this.TextViewLogData.TabIndex = 0;
             this.TextViewLogData.Text = "";
             // 
@@ -83,8 +83,8 @@
             this.TabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TabControlMain.Controls.Add(this.TabHome);
-            this.TabControlMain.Controls.Add(this.TabLog);
+            this.TabControlMain.Controls.Add(this.TabPageHome);
+            this.TabControlMain.Controls.Add(this.TabPageLog);
             this.TabControlMain.Depth = 0;
             this.TabControlMain.Location = new System.Drawing.Point(-1, 106);
             this.TabControlMain.MouseState = MaterialSkin.MouseState.HOVER;
@@ -93,17 +93,17 @@
             this.TabControlMain.Size = new System.Drawing.Size(815, 529);
             this.TabControlMain.TabIndex = 6;
             // 
-            // TabHome
+            // TabPageHome
             // 
-            this.TabHome.Controls.Add(this.btnOpenPort);
-            this.TabHome.Controls.Add(this.btnClosePort);
-            this.TabHome.Location = new System.Drawing.Point(4, 24);
-            this.TabHome.Name = "TabHome";
-            this.TabHome.Padding = new System.Windows.Forms.Padding(3);
-            this.TabHome.Size = new System.Drawing.Size(807, 501);
-            this.TabHome.TabIndex = 0;
-            this.TabHome.Text = "Home";
-            this.TabHome.UseVisualStyleBackColor = true;
+            this.TabPageHome.Controls.Add(this.btnOpenPort);
+            this.TabPageHome.Controls.Add(this.btnClosePort);
+            this.TabPageHome.Location = new System.Drawing.Point(4, 24);
+            this.TabPageHome.Name = "TabPageHome";
+            this.TabPageHome.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageHome.Size = new System.Drawing.Size(807, 501);
+            this.TabPageHome.TabIndex = 0;
+            this.TabPageHome.Text = "Home";
+            this.TabPageHome.UseVisualStyleBackColor = true;
             // 
             // btnOpenPort
             // 
@@ -119,7 +119,7 @@
             this.btnOpenPort.TabIndex = 1;
             this.btnOpenPort.Text = "open";
             this.btnOpenPort.UseVisualStyleBackColor = true;
-            this.btnOpenPort.Click += new System.EventHandler(this.btnOpenPort_Click);
+            this.btnOpenPort.Click += new System.EventHandler(this.BtnOpenPort_Click);
             // 
             // btnClosePort
             // 
@@ -135,19 +135,19 @@
             this.btnClosePort.TabIndex = 0;
             this.btnClosePort.Text = "close";
             this.btnClosePort.UseVisualStyleBackColor = true;
-            this.btnClosePort.Click += new System.EventHandler(this.btnClosePort_Click);
+            this.btnClosePort.Click += new System.EventHandler(this.BtnClosePort_Click);
             // 
-            // TabLog
+            // TabPageLog
             // 
-            this.TabLog.Controls.Add(this.TabControlLog);
-            this.TabLog.Controls.Add(this.TabSelectorLog);
-            this.TabLog.Location = new System.Drawing.Point(4, 24);
-            this.TabLog.Name = "TabLog";
-            this.TabLog.Padding = new System.Windows.Forms.Padding(3);
-            this.TabLog.Size = new System.Drawing.Size(807, 501);
-            this.TabLog.TabIndex = 1;
-            this.TabLog.Text = "Log";
-            this.TabLog.UseVisualStyleBackColor = true;
+            this.TabPageLog.Controls.Add(this.TabControlLog);
+            this.TabPageLog.Controls.Add(this.TabSelectorLog);
+            this.TabPageLog.Location = new System.Drawing.Point(4, 24);
+            this.TabPageLog.Name = "TabPageLog";
+            this.TabPageLog.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageLog.Size = new System.Drawing.Size(807, 501);
+            this.TabPageLog.TabIndex = 1;
+            this.TabPageLog.Text = "Log";
+            this.TabPageLog.UseVisualStyleBackColor = true;
             // 
             // TabControlLog
             // 
@@ -155,8 +155,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControlLog.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.TabControlLog.Controls.Add(this.TabPageLogData);
             this.TabControlLog.Controls.Add(this.TabPageLogEvents);
+            this.TabControlLog.Controls.Add(this.TabPageLogData);
             this.TabControlLog.Depth = 0;
             this.TabControlLog.Location = new System.Drawing.Point(9, 46);
             this.TabControlLog.MouseState = MaterialSkin.MouseState.HOVER;
@@ -183,7 +183,7 @@
             this.CheckBoxEnableLogging.AutoSize = true;
             this.CheckBoxEnableLogging.Depth = 0;
             this.CheckBoxEnableLogging.Font = new System.Drawing.Font("Roboto", 10F);
-            this.CheckBoxEnableLogging.Location = new System.Drawing.Point(3, 393);
+            this.CheckBoxEnableLogging.Location = new System.Drawing.Point(3, 395);
             this.CheckBoxEnableLogging.Margin = new System.Windows.Forms.Padding(0);
             this.CheckBoxEnableLogging.MouseLocation = new System.Drawing.Point(-1, -1);
             this.CheckBoxEnableLogging.MouseState = MaterialSkin.MouseState.HOVER;
@@ -217,11 +217,11 @@
             this.TextViewEvents.ForeColor = System.Drawing.Color.White;
             this.TextViewEvents.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.TextViewEvents.Location = new System.Drawing.Point(0, 0);
-            this.TextViewEvents.Margin = new System.Windows.Forms.Padding(0);
+            this.TextViewEvents.Margin = new System.Windows.Forms.Padding(5);
             this.TextViewEvents.MaxLength = 2000;
             this.TextViewEvents.Name = "TextViewEvents";
             this.TextViewEvents.ShortcutsEnabled = false;
-            this.TextViewEvents.Size = new System.Drawing.Size(780, 420);
+            this.TextViewEvents.Size = new System.Drawing.Size(780, 422);
             this.TextViewEvents.TabIndex = 2;
             this.TextViewEvents.Text = "";
             // 
@@ -252,9 +252,9 @@
             this.Text = "BBR Calibrator";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.TabControlMain.ResumeLayout(false);
-            this.TabHome.ResumeLayout(false);
-            this.TabHome.PerformLayout();
-            this.TabLog.ResumeLayout(false);
+            this.TabPageHome.ResumeLayout(false);
+            this.TabPageHome.PerformLayout();
+            this.TabPageLog.ResumeLayout(false);
             this.TabControlLog.ResumeLayout(false);
             this.TabPageLogData.ResumeLayout(false);
             this.TabPageLogData.PerformLayout();
@@ -267,8 +267,8 @@
         private System.Windows.Forms.RichTextBox TextViewLogData;
         private MaterialSkin.Controls.MaterialTabSelector TabSelectorMain;
         private MaterialSkin.Controls.MaterialTabControl TabControlMain;
-        private System.Windows.Forms.TabPage TabHome;
-        private System.Windows.Forms.TabPage TabLog;
+        private System.Windows.Forms.TabPage TabPageHome;
+        private System.Windows.Forms.TabPage TabPageLog;
         private MaterialSkin.Controls.MaterialCheckBox CheckBoxEnableLogging;
         private MaterialSkin.Controls.MaterialRaisedButton btnOpenPort;
         private MaterialSkin.Controls.MaterialRaisedButton btnClosePort;

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace ExtensionMethods {
 
@@ -39,6 +40,25 @@ namespace ExtensionMethods {
 
             int length = endIndex - startIndex;
             return s.Substring(startIndex, length);
+        }
+
+        public static void AppendTextWithHightlight ( this RichTextBox richTextBox, string text, Color color ) {
+            int selectionStartIndex = richTextBox.Text.Length;
+            richTextBox.AppendText(text);
+            int selectionEndIndex = richTextBox.Text.Length;
+            richTextBox.Select(selectionStartIndex, selectionEndIndex - selectionStartIndex + 1);
+            richTextBox.SelectionColor = color;
+        }
+        /// <summary>
+        /// Remove upper lines if number of lines reached maximum
+        /// </summary>
+        /// <param name="richTextBox"></param>
+        /// <param name="maxLines">max number of line</param>
+        public static void LimitLines(this RichTextBox richTextBox, int maxLines ) {
+            if (richTextBox.Lines.Length > maxLines) {
+                richTextBox.Select(0, richTextBox.GetFirstCharIndexFromLine(richTextBox.Lines.Length - maxLines));
+                richTextBox.SelectedText = string.Empty;
+            }
         }
     }
 }

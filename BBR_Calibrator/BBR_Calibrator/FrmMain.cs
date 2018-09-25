@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
+
+using ExtensionMethods;
 
 using GeneralAdapters;
 
@@ -36,10 +39,24 @@ namespace BBR_Calibrator {
             SerialComunication.DataReceived += OnSerialDataReceived;
             SerialComunication.ErrorOccurred += OnSerialErrorOccurred;
 
+            PrintLogoToEventTextView();
             WriteEvent("Program started!", EventType.Info);
         }
 
-        private void flipLightTheme ( object sender, EventArgs e ) {
+        private void PrintLogoToEventTextView ( ) {
+            Bitmap logo = new Bitmap(Properties.Resources.msIcon);
+            // Copy the bitmap to the clipboard.
+            Clipboard.SetDataObject(logo);
+            DataFormats.Format format = DataFormats.GetFormat(DataFormats.Bitmap);
+            // After verifying that the data can be pasted, paste
+            if (true || TextViewEvents.CanPaste(format)) {
+                TextViewEvents.AppendText("\n ");
+                TextViewEvents.Paste(format);
+                TextViewEvents.AppendText("\n\n");
+            }
+        }
+
+        private void FlipLightTheme ( object sender, EventArgs e ) {
             MaterialSkinManager.Theme = MaterialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? MaterialSkinManager.Themes.LIGHT : MaterialSkinManager.Themes.DARK;
         }
 
@@ -67,10 +84,7 @@ namespace BBR_Calibrator {
         private void WriteLogData ( string text ) {
             int maxLines = int.Parse(Resources.MainResources.MaxLogDataLines);
 
-            if (TextViewLogData.Lines.Length > maxLines) {
-                TextViewLogData.Select(0, TextViewLogData.GetFirstCharIndexFromLine(1));
-                TextViewLogData.SelectedText = string.Empty;
-            }
+            TextViewLogData.LimitLines(maxLines);
 
             TextViewLogData.AppendText(text);
             TextViewLogData.SelectionStart = TextViewLogData.Text.Length;
@@ -80,11 +94,9 @@ namespace BBR_Calibrator {
         private void WriteEvent ( string text, EventType eventType ) {
             int maxLines = int.Parse(Resources.MainResources.MaxLogEventLines);
             string time = DateTime.Now.ToString("[HH:mm:ss.fff] ");
-            if (TextViewEvents.Lines.Length > maxLines) {
-                //2: include new 2 new line character
-                TextViewEvents.Select(0, TextViewEvents.GetFirstCharIndexFromLine(2));
-                TextViewEvents.SelectedText = string.Empty;
-            }
+
+            TextViewEvents.LimitLines(maxLines);
+
             Color textColor = Color.White;
             switch (eventType) {
                 case EventType.Info:
@@ -99,24 +111,14 @@ namespace BBR_Calibrator {
                     textColor = Color.Red;
                     break;
             }
-
+            //to make sure there is an one-line spacer
             if (text.EndsWith("\n"))
                 text += "\n";
             else
                 text += "\n\n";
 
-            int selectionStartIndex = TextViewEvents.Text.Length;
-            TextViewEvents.AppendText(time);
-            int selectionEndIndex = TextViewEvents.Text.Length;
-            TextViewEvents.Select(selectionStartIndex, selectionEndIndex);
-            TextViewEvents.SelectionColor = Color.Orange;
-
-            selectionStartIndex = TextViewEvents.Text.Length;
-            TextViewEvents.AppendText(text);
-            selectionEndIndex = TextViewEvents.Text.Length;
-
-            TextViewEvents.Select(selectionStartIndex, selectionEndIndex);
-            TextViewEvents.SelectionColor = textColor;
+            TextViewEvents.AppendTextWithHightlight(time, Color.Orange);
+            TextViewEvents.AppendTextWithHightlight(text, textColor);
 
             TextViewEvents.SelectionStart = TextViewEvents.Text.Length;
             TextViewEvents.ScrollToCaret();
@@ -124,7 +126,7 @@ namespace BBR_Calibrator {
 
         private int colorSchemeIndex;
 
-        private void changeTheme ( object sender, EventArgs e ) {
+        private void ChangeTheme ( object sender, EventArgs e ) {
             colorSchemeIndex++;
             if (colorSchemeIndex > 2)
                 colorSchemeIndex = 0;
@@ -145,7 +147,7 @@ namespace BBR_Calibrator {
             }
         }
 
-        private void materialFlatButton1_Click ( object sender, EventArgs e ) {
+        private void MaterialFlatButton1_Click ( object sender, EventArgs e ) {
             TextViewLogData.Select(0, TextViewLogData.GetFirstCharIndexFromLine(1)); // select the first line
             TextViewLogData.SelectedText = "";
         }
@@ -153,12 +155,12 @@ namespace BBR_Calibrator {
         private void FrmMain_Load ( object sender, EventArgs e ) {
         }
 
-        private void btnClosePort_Click ( object sender, EventArgs e ) {
+        private void BtnClosePort_Click ( object sender, EventArgs e ) {
             SerialComunication.Instance.Close();
             WriteEvent("Serial port closed", EventType.Info);
         }
 
-        private void btnOpenPort_Click ( object sender, EventArgs e ) {
+        private void BtnOpenPort_Click ( object sender, EventArgs e ) {
             SerialComunication.Instance.Open();
             WriteEvent("Serial port opened", EventType.Info);
         }
