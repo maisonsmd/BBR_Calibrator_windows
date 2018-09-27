@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
-
-using ExtensionMethods;
-
-using GeneralAdapters;
 
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -12,121 +7,59 @@ using MaterialSkin.Controls;
 namespace BBR_Calibrator {
 
     public partial class FrmMain : MaterialForm {
-
-        public enum EventType {
-            Info,
-            Warning,
-            Error
-        };
-
+        private const string Tag = "Main";
         private readonly MaterialSkinManager MaterialSkinManager;
-        private SerialComunication SerialComunication;
-        //private SerialComunication.OnDataReceivedHandler OnDataReceivedDelegate;
-        //private SerialComunication.OnErrorOccurredHandler OnErrorOccurredDelegate;
+        private SerialCommunication Serial;
+
+        public LoggerClass Logger;
+        public IMUClass IMU;
 
         public FrmMain ( ) {
             InitializeComponent();
+            Logger = new LoggerClass(this);
+            IMU = new IMUClass(this);
 
             MaterialSkinManager = MaterialSkinManager.Instance;
             MaterialSkinManager.AddFormToManage(this);
             MaterialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
             MaterialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
 
-            //OnDataReceivedDelegate = WriteLogData;
-            //OnErrorOccurredDelegate = WriteEvent;
+            Serial = SerialCommunication.Instance;
+            Serial.DataReceived += Serial_DataReceived;
+            Serial.InfoReceived += Serial_InfoReceived;
+            Serial.ValidPortFound += Serial_ValidPortFound;
 
-            SerialComunication = SerialComunication.Instance;
-            SerialComunication.DataReceived += OnSerialDataReceived;
-            SerialComunication.ErrorOccurred += OnSerialErrorOccurred;
+            Logger.PrintLogo();
+            Logger.LogEvent(Tag, "Program started!", LoggerClass.EventType.Info);
+            IMU.Randomize();
 
-            PrintLogoToEventTextView();
-            WriteEvent("Program started!", EventType.Info);
+            Size = new System.Drawing.Size(1000, 600);
         }
 
-        private void PrintLogoToEventTextView ( ) {
-            Bitmap logo = new Bitmap(Properties.Resources.msIcon);
-            // Copy the bitmap to the clipboard.
-            Clipboard.SetDataObject(logo);
-            DataFormats.Format format = DataFormats.GetFormat(DataFormats.Bitmap);
-            // After verifying that the data can be pasted, paste
-            if (true || TextViewEvents.CanPaste(format)) {
-                TextViewEvents.AppendText("\n ");
-                TextViewEvents.Paste(format);
-                TextViewEvents.AppendText("\n\n");
-            }
+        private void Serial_ValidPortFound ( string portName ) {
+            Invoke(new EventHandler(delegate{ BtnConnect.Text = "Disconnect (" + portName + ")"; }));
         }
 
-        private void FlipLightTheme ( object sender, EventArgs e ) {
+        private void Serial_InfoReceived ( string tag, string infoString , LoggerClass.EventType eventType) {
+            Invoke(new EventHandler(delegate { Logger.LogEvent(tag, infoString, eventType); }));
+        }
+
+        private void FlipLightTheme ( ) {
             MaterialSkinManager.Theme = MaterialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? MaterialSkinManager.Themes.LIGHT : MaterialSkinManager.Themes.DARK;
         }
 
-        private void OnSerialDataReceived ( string data ) {
-            if (CheckBoxEnableLogging.Checked)
-                Invoke(new EventHandler(delegate { WriteLogData(data); }));
-            //OnDataReceivedDelegate?.BeginInvoke(data, SerialDataReceivedInvokeCallback, null);
+        private void Serial_DataReceived ( string data ) {
+            if (CheckBoxEnableDataInLogging.Checked)
+                Invoke(new EventHandler(delegate { Logger.LogDataIn(data); }));
         }
 
-        private void OnSerialErrorOccurred ( string data ) {
-            Invoke(new EventHandler(delegate { WriteEvent(data, EventType.Error); }));
-            //BeginInvoke(new EventHandler(delegate { WriteEvent(data, "error"); }), null);
-            //OnErrorOccurredDelegate?.BeginInvoke(data, eventType, SerialErrorOccurredInvokeCallback, null);
-            //Invoke(WriteEvent, data, eventType);
-        }
-
-        //private void SerialDataReceivedInvokeCallback ( IAsyncResult ar ) {
-        //    OnDataReceivedDelegate?.EndInvoke(ar);
-        //}
-
-        //private void SerialErrorOccurredInvokeCallback ( IAsyncResult ar ) {
-        //    OnErrorOccurredDelegate?.EndInvoke(ar);
-        //}
-
-        private void WriteLogData ( string text ) {
-            int maxLines = int.Parse(Resources.MainResources.MaxLogDataLines);
-
-            TextViewLogData.LimitLines(maxLines);
-
-            TextViewLogData.AppendText(text);
-            TextViewLogData.SelectionStart = TextViewLogData.Text.Length;
-            TextViewLogData.ScrollToCaret();
-        }
-
-        private void WriteEvent ( string text, EventType eventType ) {
-            int maxLines = int.Parse(Resources.MainResources.MaxLogEventLines);
-            string time = DateTime.Now.ToString("[HH:mm:ss.fff] ");
-
-            TextViewEvents.LimitLines(maxLines);
-
-            Color textColor = Color.White;
-            switch (eventType) {
-                case EventType.Info:
-                    textColor = Color.White;
-                    break;
-
-                case EventType.Warning:
-                    textColor = Color.Yellow;
-                    break;
-
-                case EventType.Error:
-                    textColor = Color.Red;
-                    break;
-            }
-            //to make sure there is an one-line spacer
-            if (text.EndsWith("\n"))
-                text += "\n";
-            else
-                text += "\n\n";
-
-            TextViewEvents.AppendTextWithHightlight(time, Color.Orange);
-            TextViewEvents.AppendTextWithHightlight(text, textColor);
-
-            TextViewEvents.SelectionStart = TextViewEvents.Text.Length;
-            TextViewEvents.ScrollToCaret();
+        private void SerialComunication_ErrorOccurred ( string tag, string data ) {
+            Invoke(new EventHandler(delegate { Logger.LogEvent(tag, data, LoggerClass.EventType.Error); }));
         }
 
         private int colorSchemeIndex;
 
-        private void ChangeTheme ( object sender, EventArgs e ) {
+        private void ChangeTheme ( ) {
             colorSchemeIndex++;
             if (colorSchemeIndex > 2)
                 colorSchemeIndex = 0;
@@ -148,22 +81,29 @@ namespace BBR_Calibrator {
         }
 
         private void MaterialFlatButton1_Click ( object sender, EventArgs e ) {
-            TextViewLogData.Select(0, TextViewLogData.GetFirstCharIndexFromLine(1)); // select the first line
-            TextViewLogData.SelectedText = "";
         }
 
         private void FrmMain_Load ( object sender, EventArgs e ) {
-            SerialComunication.Open();
+            Serial.FindPort();
         }
 
         private void BtnClosePort_Click ( object sender, EventArgs e ) {
-            if (SerialComunication.Instance.Close())
-                WriteEvent("Serial port closed", EventType.Info);
+            ChangeTheme();
+            Serial.Close();
         }
 
         private void BtnOpenPort_Click ( object sender, EventArgs e ) {
-            if (SerialComunication.Instance.Open())
-                WriteEvent("Serial port opened", EventType.Info);
+            Serial.Open();
+        }
+
+        private void BtnConnect_Click ( object sender, EventArgs e ) {
+            if (Serial.IsOpen) {
+                Serial.Close();
+                BtnConnect.Text = "Connect";
+            }
+            else {
+                Serial.FindPort();
+            }
         }
     }
 }

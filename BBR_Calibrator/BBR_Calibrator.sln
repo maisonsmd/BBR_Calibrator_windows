@@ -7,26 +7,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBR_Calibrator", "BBR_Calib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialSkin", "MaterialSkin\MaterialSkin.csproj", "{8EB7611B-68CD-4B8B-987A-11717E2B250C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralAdapters", "GeneralAdapters\GeneralAdapters.csproj", "{CF40E4E1-82AB-402A-BCF2-AF277B29112E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C475A093-E861-47EC-8864-4B108BFD0E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C475A093-E861-47EC-8864-4B108BFD0E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C475A093-E861-47EC-8864-4B108BFD0E98}.Debug|x86.ActiveCfg = Debug|x86
+		{C475A093-E861-47EC-8864-4B108BFD0E98}.Debug|x86.Build.0 = Debug|x86
 		{C475A093-E861-47EC-8864-4B108BFD0E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C475A093-E861-47EC-8864-4B108BFD0E98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C475A093-E861-47EC-8864-4B108BFD0E98}.Release|x86.ActiveCfg = Release|x86
+		{C475A093-E861-47EC-8864-4B108BFD0E98}.Release|x86.Build.0 = Release|x86
 		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Debug|x86.ActiveCfg = Debug|x86
+		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Debug|x86.Build.0 = Debug|x86
 		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF40E4E1-82AB-402A-BCF2-AF277B29112E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF40E4E1-82AB-402A-BCF2-AF277B29112E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF40E4E1-82AB-402A-BCF2-AF277B29112E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF40E4E1-82AB-402A-BCF2-AF277B29112E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Release|x86.ActiveCfg = Release|x86
+		{8EB7611B-68CD-4B8B-987A-11717E2B250C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

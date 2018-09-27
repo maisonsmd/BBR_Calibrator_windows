@@ -61,7 +61,7 @@ namespace BBR_Calibrator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 25.
+        ///   Looks up a localized string similar to 100.
         /// </summary>
         internal static string MaxLogDataLines {
             get {

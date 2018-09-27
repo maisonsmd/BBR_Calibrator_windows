@@ -117,10 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MaxLogDataLines" xml:space="preserve">
-    <value>100</value>
-  </data>
-  <data name="MaxLogEventLines" xml:space="preserve">
-    <value>200</value>
-  </data>
 </root>

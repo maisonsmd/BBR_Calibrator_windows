@@ -54,11 +54,22 @@ namespace ExtensionMethods {
         /// </summary>
         /// <param name="richTextBox"></param>
         /// <param name="maxLines">max number of line</param>
-        public static void LimitLines(this RichTextBox richTextBox, int maxLines ) {
-            if (richTextBox.Lines.Length > maxLines) {
-                richTextBox.Select(0, richTextBox.GetFirstCharIndexFromLine(richTextBox.Lines.Length - maxLines));
+        /// <returns>number of lines deleted</returns>
+        public static int LimitLines(this RichTextBox richTextBox, int maxLines ) {
+            if (richTextBox.Lines.Length < maxLines)
+                return 0;
+            int removedLines = 0;
+            if (maxLines > 0 && richTextBox.Lines.Length > maxLines) {
+                removedLines = richTextBox.Lines.Length - maxLines;
+                richTextBox.Select(0, richTextBox.GetFirstCharIndexFromLine(removedLines));
                 richTextBox.SelectedText = string.Empty;
             }
+            return removedLines;
+        }
+
+        public static void ScrollToEnd(this RichTextBox richTextBox) {
+            richTextBox.SelectionStart = richTextBox.Text.Length;
+            richTextBox.ScrollToCaret();
         }
     }
 }

@@ -16,10 +16,10 @@ namespace BBR_Calibrator.GraphicHelpers {
     }
 
     public partial class Graph2D : UserControl {
-        public String XAxisLable;
-        public String YAxisLable;
-        public Color PointColor;
-        public Color GridColor;
+        private String xAxisLabel;
+        private String yAxisLabel;
+        private Color pointColor;
+        private Color gridColor;
 
         private List<PointValue> values;
         private Pen linePen;
@@ -33,18 +33,18 @@ namespace BBR_Calibrator.GraphicHelpers {
             InitializeComponent();
 
             values = new List<PointValue>();
-            XAxisLable = "X";
-            YAxisLable = "Y";
-            PointColor = Color.Red;
-            GridColor = Color.Gray;
+            xAxisLabel = "X";
+            yAxisLabel = "Y";
+            pointColor = Color.Red;
+            gridColor = Color.Gray;
 
             pointSize = 5;
             absoluteMaxValue = 1;
 
-            linePen = new Pen(GridColor, 1);
-            pointPen = new Pen(PointColor, 1);
-            pointBrush = new SolidBrush(PointColor);
-            textBrush = new SolidBrush(GridColor);
+            linePen = new Pen(gridColor, 1);
+            pointPen = new Pen(pointColor, 1);
+            pointBrush = new SolidBrush(pointColor);
+            textBrush = new SolidBrush(gridColor);
         }
 
         public void AddPoint ( double xValue, double yValue ) {
@@ -53,8 +53,8 @@ namespace BBR_Calibrator.GraphicHelpers {
             PointValue newValue = new PointValue();
             newValue.X = xValue;
             newValue.Y = yValue;
-            newValue.Boundary = new Rectangle((int)newValue.X.Map(-absoluteMaxValue, absoluteMaxValue, 0, w),
-                                    (int)newValue.Y.Map(-absoluteMaxValue, absoluteMaxValue, h, 0), pointSize, pointSize);
+            newValue.Boundary = new Rectangle((int)newValue.X.Map(-absoluteMaxValue * 1.2, absoluteMaxValue * 1.2, 0, w),
+                                    (int)newValue.Y.Map(-absoluteMaxValue * 1.2, absoluteMaxValue * 1.2, h, 0), pointSize, pointSize);
             values.Add(newValue);
             Rectangle rectangle = newValue.Boundary;
             rectangle.Size = new Size(rectangle.Size.Width + 1, rectangle.Size.Height + 1);
@@ -78,8 +78,8 @@ namespace BBR_Calibrator.GraphicHelpers {
 
                     for (int i = 0; i < values.Count; i++) {
                         PointValue pointValue = values [i];
-                        pointValue.Boundary = new Rectangle((int)pointValue.X.Map(-absoluteMaxValue, absoluteMaxValue, 0, w),
-                                    (int)pointValue.Y.Map(-absoluteMaxValue, absoluteMaxValue, h, 0), pointSize, pointSize);
+                        pointValue.Boundary = new Rectangle((int)pointValue.X.Map(-absoluteMaxValue * 1.2, absoluteMaxValue * 1.2, 0, w),
+                                    (int)pointValue.Y.Map(-absoluteMaxValue * 1.2, absoluteMaxValue * 1.2, h, 0), pointSize, pointSize);
                         values [i] = pointValue;
                     }
                     Invalidate();
@@ -87,14 +87,43 @@ namespace BBR_Calibrator.GraphicHelpers {
             }
         }
 
-        public int PointSize {
-            get {
-                return pointSize;
+        public string XAxisLabel {
+            get { return xAxisLabel; }
+            set { xAxisLabel = value; Invalidate(); }
+        }
+
+        public string YAxisLabel {
+            get { return yAxisLabel; }
+            set { yAxisLabel = value; }
+        }
+
+        public Color PointColor {
+            get { return pointColor; }
+            set {
+                pointColor = value;
+                pointPen = new Pen(pointColor, 1);
+                pointBrush = new SolidBrush(pointColor);
+                Invalidate();
             }
+        }
+
+        public Color GridColor {
+            get { return gridColor; }
+            set {
+                gridColor = value;
+                linePen = new Pen(gridColor, 1);
+                textBrush = new SolidBrush(gridColor);
+                Invalidate();
+            }
+        }
+
+        public int PointSize {
+            get { return pointSize; }
             set {
                 pointSize = value;
                 if (pointSize < 3)
                     pointSize = 3;
+                Invalidate();
             }
         }
 
@@ -102,6 +131,22 @@ namespace BBR_Calibrator.GraphicHelpers {
             Graphics g = e.Graphics;
             int h = Size.Height;
             int w = Size.Width;
+
+            #region draw axes' lines and labels
+
+            //X axis
+            g.DrawLine(linePen, new Point(w, h / 2), new Point(0, h / 2));
+            g.DrawLine(linePen, new Point(w, h / 2), new Point(w - 5, h / 2 + 5));
+            g.DrawLine(linePen, new Point(w, h / 2), new Point(w - 5, h / 2 - 5));
+            g.DrawString(xAxisLabel, new Font(FontFamily.GenericSansSerif, 8), textBrush, w - 10, h / 2 + 10);
+
+            //Y axis
+            g.DrawLine(linePen, new Point(w / 2, 0), new Point(w / 2, h));
+            g.DrawLine(linePen, new Point(w / 2, 0), new Point(w / 2 - 5, 5));
+            g.DrawLine(linePen, new Point(w / 2, 0), new Point(w / 2 + 5, 5));
+            g.DrawString(yAxisLabel, new Font(FontFamily.GenericSansSerif, 8), textBrush, w / 2 + 10, 0);
+
+            #endregion draw axes' lines and labels
 
             #region draw points
 
@@ -111,29 +156,11 @@ namespace BBR_Calibrator.GraphicHelpers {
             }
 
             #endregion draw points
-
-            #region draw axes' lines and lables
-
-            //X axis
-            g.DrawLine(linePen, new Point(w, h / 2), new Point(0, h / 2));
-            g.DrawLine(linePen, new Point(w, h / 2), new Point(w - 5, h / 2 + 5));
-            g.DrawLine(linePen, new Point(w, h / 2), new Point(w - 5, h / 2 - 5));
-            g.DrawString(XAxisLable, new Font(FontFamily.GenericSansSerif, 8), textBrush, w - 10, h / 2 + 10);
-
-            //Y axis
-            g.DrawLine(linePen, new Point(w / 2, 0), new Point(w / 2, h));
-            g.DrawLine(linePen, new Point(w / 2, 0), new Point(w / 2 - 5, 5));
-            g.DrawLine(linePen, new Point(w / 2, 0), new Point(w / 2 + 5, 5));
-            g.DrawString(YAxisLable, new Font(FontFamily.GenericSansSerif, 8), textBrush, w / 2 + 10, 0);
-
-            #endregion draw axes' lines and lables
         }
 
         private void Graph2D_SizeChanged ( object sender, EventArgs e ) {
-            if (Size.Width < Size.Height)
-                Size = new Size(Size.Height, Size.Height);
-            if (Size.Height < Size.Width)
-                Size = new Size(Size.Width, Size.Width);
+            //if (Size.Width != Size.Height)
+            //    Size = new Size((Size.Height + Size.Width) / 2, (Size.Height + Size.Width) / 2);
             Invalidate();
         }
     }
