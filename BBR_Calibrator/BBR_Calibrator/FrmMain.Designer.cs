@@ -28,10 +28,8 @@
             this.TabSelectorMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.TabControlMain = new MaterialSkin.Controls.MaterialTabControl();
             this.TabPageHome = new System.Windows.Forms.TabPage();
+            this.BtnConnect = new MaterialSkin.Controls.MaterialRaisedButton();
             this.TabPageIMU = new System.Windows.Forms.TabPage();
-            this.GraphXZ = new BBR_Calibrator.GraphicHelpers.Graph2D();
-            this.GraphYZ = new BBR_Calibrator.GraphicHelpers.Graph2D();
-            this.GraphXY = new BBR_Calibrator.GraphicHelpers.Graph2D();
             this.TabPageMotors = new System.Windows.Forms.TabPage();
             this.TabPageRobot = new System.Windows.Forms.TabPage();
             this.TabPageLog = new System.Windows.Forms.TabPage();
@@ -44,9 +42,10 @@
             this.CheckBoxEnableDataOutLogging = new MaterialSkin.Controls.MaterialCheckBox();
             this.TextViewDataOut = new System.Windows.Forms.RichTextBox();
             this.TabSelectorLog = new MaterialSkin.Controls.MaterialTabSelector();
-            this.btnOpenPort = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.btnClosePort = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.BtnConnect = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.GraphXZ = new BBR_Calibrator.GraphicHelpers.Graph2D();
+            this.GraphYZ = new BBR_Calibrator.GraphicHelpers.Graph2D();
+            this.GraphXY = new BBR_Calibrator.GraphicHelpers.Graph2D();
+            this.BtnRequest = new MaterialSkin.Controls.MaterialRaisedButton();
             this.TabControlMain.SuspendLayout();
             this.TabPageHome.SuspendLayout();
             this.TabPageIMU.SuspendLayout();
@@ -113,9 +112,8 @@
             // 
             // TabPageHome
             // 
+            this.TabPageHome.Controls.Add(this.BtnRequest);
             this.TabPageHome.Controls.Add(this.BtnConnect);
-            this.TabPageHome.Controls.Add(this.btnOpenPort);
-            this.TabPageHome.Controls.Add(this.btnClosePort);
             this.TabPageHome.Font = new System.Drawing.Font("Roboto", 10F);
             this.TabPageHome.Location = new System.Drawing.Point(4, 26);
             this.TabPageHome.Name = "TabPageHome";
@@ -124,6 +122,22 @@
             this.TabPageHome.TabIndex = 0;
             this.TabPageHome.Text = "Home";
             this.TabPageHome.UseVisualStyleBackColor = true;
+            // 
+            // BtnConnect
+            // 
+            this.BtnConnect.AutoSize = true;
+            this.BtnConnect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnConnect.Depth = 0;
+            this.BtnConnect.Icon = null;
+            this.BtnConnect.Location = new System.Drawing.Point(9, 6);
+            this.BtnConnect.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnConnect.Name = "BtnConnect";
+            this.BtnConnect.Primary = true;
+            this.BtnConnect.Size = new System.Drawing.Size(84, 36);
+            this.BtnConnect.TabIndex = 2;
+            this.BtnConnect.Text = "Connect";
+            this.BtnConnect.UseVisualStyleBackColor = true;
+            this.BtnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
             // TabPageIMU
             // 
@@ -138,51 +152,6 @@
             this.TabPageIMU.TabIndex = 2;
             this.TabPageIMU.Text = "IMU";
             this.TabPageIMU.UseVisualStyleBackColor = true;
-            // 
-            // GraphXZ
-            // 
-            this.GraphXZ.AbsoluteMaxValue = 100D;
-            this.GraphXZ.Font = new System.Drawing.Font("Roboto", 10F);
-            this.GraphXZ.GridColor = System.Drawing.Color.Gray;
-            this.GraphXZ.Location = new System.Drawing.Point(9, 245);
-            this.GraphXZ.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.GraphXZ.Name = "GraphXZ";
-            this.GraphXZ.PointColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.GraphXZ.PointSize = 3;
-            this.GraphXZ.Size = new System.Drawing.Size(200, 200);
-            this.GraphXZ.TabIndex = 0;
-            this.GraphXZ.XAxisLabel = "X";
-            this.GraphXZ.YAxisLabel = "Z";
-            // 
-            // GraphYZ
-            // 
-            this.GraphYZ.AbsoluteMaxValue = 100D;
-            this.GraphYZ.Font = new System.Drawing.Font("Roboto", 10F);
-            this.GraphYZ.GridColor = System.Drawing.Color.Gray;
-            this.GraphYZ.Location = new System.Drawing.Point(245, 22);
-            this.GraphYZ.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.GraphYZ.Name = "GraphYZ";
-            this.GraphYZ.PointColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.GraphYZ.PointSize = 3;
-            this.GraphYZ.Size = new System.Drawing.Size(200, 200);
-            this.GraphYZ.TabIndex = 0;
-            this.GraphYZ.XAxisLabel = "Z";
-            this.GraphYZ.YAxisLabel = "Y";
-            // 
-            // GraphXY
-            // 
-            this.GraphXY.AbsoluteMaxValue = 100D;
-            this.GraphXY.Font = new System.Drawing.Font("Roboto", 10F);
-            this.GraphXY.GridColor = System.Drawing.Color.Gray;
-            this.GraphXY.Location = new System.Drawing.Point(9, 22);
-            this.GraphXY.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.GraphXY.Name = "GraphXY";
-            this.GraphXY.PointColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.GraphXY.PointSize = 3;
-            this.GraphXY.Size = new System.Drawing.Size(200, 200);
-            this.GraphXY.TabIndex = 0;
-            this.GraphXY.XAxisLabel = "X";
-            this.GraphXY.YAxisLabel = "Y";
             // 
             // TabPageMotors
             // 
@@ -363,57 +332,66 @@
             this.TabSelectorLog.TabIndex = 6;
             this.TabSelectorLog.Text = "TabSelectorLog";
             // 
-            // btnOpenPort
+            // GraphXZ
             // 
-            this.btnOpenPort.AutoSize = true;
-            this.btnOpenPort.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnOpenPort.Depth = 0;
-            this.btnOpenPort.Font = new System.Drawing.Font("Roboto", 10F);
-            this.btnOpenPort.Icon = null;
-            this.btnOpenPort.Location = new System.Drawing.Point(79, 24);
-            this.btnOpenPort.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnOpenPort.Name = "btnOpenPort";
-            this.btnOpenPort.Primary = true;
-            this.btnOpenPort.Size = new System.Drawing.Size(57, 36);
-            this.btnOpenPort.TabIndex = 1;
-            this.btnOpenPort.TabStop = false;
-            this.btnOpenPort.Text = "open";
-            this.btnOpenPort.UseVisualStyleBackColor = true;
-            this.btnOpenPort.Click += new System.EventHandler(this.BtnOpenPort_Click);
+            this.GraphXZ.AbsoluteMaxValue = 100D;
+            this.GraphXZ.Font = new System.Drawing.Font("Roboto", 10F);
+            this.GraphXZ.GridColor = System.Drawing.Color.Gray;
+            this.GraphXZ.Location = new System.Drawing.Point(9, 245);
+            this.GraphXZ.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.GraphXZ.Name = "GraphXZ";
+            this.GraphXZ.PointColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.GraphXZ.PointSize = 3;
+            this.GraphXZ.Size = new System.Drawing.Size(200, 200);
+            this.GraphXZ.TabIndex = 0;
+            this.GraphXZ.XAxisLabel = "X";
+            this.GraphXZ.YAxisLabel = "Z";
             // 
-            // btnClosePort
+            // GraphYZ
             // 
-            this.btnClosePort.AutoSize = true;
-            this.btnClosePort.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnClosePort.Depth = 0;
-            this.btnClosePort.Font = new System.Drawing.Font("Roboto", 10F);
-            this.btnClosePort.Icon = null;
-            this.btnClosePort.Location = new System.Drawing.Point(10, 24);
-            this.btnClosePort.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnClosePort.Name = "btnClosePort";
-            this.btnClosePort.Primary = true;
-            this.btnClosePort.Size = new System.Drawing.Size(63, 36);
-            this.btnClosePort.TabIndex = 0;
-            this.btnClosePort.TabStop = false;
-            this.btnClosePort.Text = "close";
-            this.btnClosePort.UseVisualStyleBackColor = true;
-            this.btnClosePort.Click += new System.EventHandler(this.BtnClosePort_Click);
+            this.GraphYZ.AbsoluteMaxValue = 100D;
+            this.GraphYZ.Font = new System.Drawing.Font("Roboto", 10F);
+            this.GraphYZ.GridColor = System.Drawing.Color.Gray;
+            this.GraphYZ.Location = new System.Drawing.Point(245, 22);
+            this.GraphYZ.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.GraphYZ.Name = "GraphYZ";
+            this.GraphYZ.PointColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.GraphYZ.PointSize = 3;
+            this.GraphYZ.Size = new System.Drawing.Size(200, 200);
+            this.GraphYZ.TabIndex = 0;
+            this.GraphYZ.XAxisLabel = "Z";
+            this.GraphYZ.YAxisLabel = "Y";
             // 
-            // BtnConnect
+            // GraphXY
             // 
-            this.BtnConnect.AutoSize = true;
-            this.BtnConnect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BtnConnect.Depth = 0;
-            this.BtnConnect.Icon = null;
-            this.BtnConnect.Location = new System.Drawing.Point(157, 24);
-            this.BtnConnect.MouseState = MaterialSkin.MouseState.HOVER;
-            this.BtnConnect.Name = "BtnConnect";
-            this.BtnConnect.Primary = true;
-            this.BtnConnect.Size = new System.Drawing.Size(84, 36);
-            this.BtnConnect.TabIndex = 2;
-            this.BtnConnect.Text = "Connect";
-            this.BtnConnect.UseVisualStyleBackColor = true;
-            this.BtnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
+            this.GraphXY.AbsoluteMaxValue = 100D;
+            this.GraphXY.Font = new System.Drawing.Font("Roboto", 10F);
+            this.GraphXY.GridColor = System.Drawing.Color.Gray;
+            this.GraphXY.Location = new System.Drawing.Point(9, 22);
+            this.GraphXY.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.GraphXY.Name = "GraphXY";
+            this.GraphXY.PointColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.GraphXY.PointSize = 3;
+            this.GraphXY.Size = new System.Drawing.Size(200, 200);
+            this.GraphXY.TabIndex = 0;
+            this.GraphXY.XAxisLabel = "X";
+            this.GraphXY.YAxisLabel = "Y";
+            // 
+            // BtnRequest
+            // 
+            this.BtnRequest.AutoSize = true;
+            this.BtnRequest.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnRequest.Depth = 0;
+            this.BtnRequest.Icon = null;
+            this.BtnRequest.Location = new System.Drawing.Point(9, 48);
+            this.BtnRequest.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnRequest.Name = "BtnRequest";
+            this.BtnRequest.Primary = true;
+            this.BtnRequest.Size = new System.Drawing.Size(80, 36);
+            this.BtnRequest.TabIndex = 3;
+            this.BtnRequest.Text = "Request";
+            this.BtnRequest.UseVisualStyleBackColor = true;
+            this.BtnRequest.Click += new System.EventHandler(this.BtnRequest_Click);
             // 
             // FrmMain
             // 
@@ -466,9 +444,8 @@
         private System.Windows.Forms.TabPage TabPageDataOut;
         public MaterialSkin.Controls.MaterialCheckBox CheckBoxEnableDataOutLogging;
         public System.Windows.Forms.RichTextBox TextViewDataOut;
-        public MaterialSkin.Controls.MaterialRaisedButton btnOpenPort;
-        public MaterialSkin.Controls.MaterialRaisedButton btnClosePort;
         private MaterialSkin.Controls.MaterialRaisedButton BtnConnect;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnRequest;
     }
 }
 

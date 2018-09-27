@@ -7,7 +7,7 @@ using MaterialSkin.Controls;
 namespace BBR_Calibrator {
 
     public partial class FrmMain : MaterialForm {
-        private const string Tag = "Main";
+        private const string TAG = "Main";
         private readonly MaterialSkinManager MaterialSkinManager;
         private SerialCommunication Serial;
 
@@ -21,7 +21,7 @@ namespace BBR_Calibrator {
 
             MaterialSkinManager = MaterialSkinManager.Instance;
             MaterialSkinManager.AddFormToManage(this);
-            MaterialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+            MaterialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             MaterialSkinManager.ColorScheme = new ColorScheme(Primary.Green600, Primary.Green700, Primary.Green200, Accent.Red100, TextShade.WHITE);
 
             Serial = SerialCommunication.Instance;
@@ -30,7 +30,7 @@ namespace BBR_Calibrator {
             Serial.ValidPortFound += Serial_ValidPortFound;
 
             Logger.PrintLogo();
-            Logger.LogEvent(Tag, "Program started!", LoggerClass.EventType.Info);
+            Logger.LogEvent(TAG, "Program started!", LoggerClass.EventType.Info);
             IMU.Randomize();
 
             Size = new System.Drawing.Size(1000, 600);
@@ -87,15 +87,6 @@ namespace BBR_Calibrator {
             Serial.FindPort();
         }
 
-        private void BtnClosePort_Click ( object sender, EventArgs e ) {
-            ChangeTheme();
-            Serial.Close();
-        }
-
-        private void BtnOpenPort_Click ( object sender, EventArgs e ) {
-            Serial.Open();
-        }
-
         private void BtnConnect_Click ( object sender, EventArgs e ) {
             if (Serial.IsOpen) {
                 Serial.Close();
@@ -104,6 +95,10 @@ namespace BBR_Calibrator {
             else {
                 Serial.FindPort();
             }
+        }
+
+        private void BtnRequest_Click ( object sender, EventArgs e ) {
+            Serial.Request();
         }
     }
 }

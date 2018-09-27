@@ -8,7 +8,15 @@ using BBR_Calibrator.MathHelpers;
 namespace BBR_Calibrator {
 
     internal class SerialCommunication {
-        private const string Tag = "SerialCommunication";
+        private const string TAG = "SerialCommunication";
+        private const int PackageLength = 30;
+        private static readonly byte [] BeginBytes = { 0xAA, 0xCD };
+        private static readonly byte [] EndBytes = { 0xBB, 0xFA };
+        private static readonly byte [] InBuffer = new byte [PackageLength];
+        private static readonly byte [] OutBuffer = new byte [PackageLength];
+
+        private static readonly byte [] ConnectionQueryBytes = { 0xAA, 0xBB };
+        private static readonly byte [] ConnectionQueryResponseBytes = { 0xCC, 0xDD };
 
         private SerialPort serial;
 
@@ -28,9 +36,6 @@ namespace BBR_Calibrator {
 
         private bool IsFindingPort = false;
 
-        /// <summary>
-        /// create a new instance
-        /// </summary>
         private SerialCommunication ( ) {
             serial = new SerialPort {
                 BaudRate = 115200,
@@ -41,16 +46,19 @@ namespace BBR_Calibrator {
             //serial.DataReceived += Serial_DataReceived;
         }
 
-        private void PrintInfo ( string info ) {
-            InfoReceived?.BeginInvoke(Tag, info, LoggerClass.EventType.Info, InfoReceivedInvokeCallback, null);
+        private void PrintInfo ( string format , params object[] args) {
+            InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Info, InfoReceivedInvokeCallback, null);
+        }
+        //private void PrintInfo ( string format , params object[] args) {
+        //    InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Info, InfoReceivedInvokeCallback, null);
+        //}
+
+        private void PrintWarning ( string format, params object [] args ) {
+            InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Warning, InfoReceivedInvokeCallback, null);
         }
 
-        private void PrintWarning ( string warning ) {
-            InfoReceived?.BeginInvoke(Tag, warning, LoggerClass.EventType.Warning, InfoReceivedInvokeCallback, null);
-        }
-
-        private void PrintError ( string error ) {
-            InfoReceived?.BeginInvoke(Tag, error, LoggerClass.EventType.Error, InfoReceivedInvokeCallback, null);
+        private void PrintError ( string format, params object [] args ) {
+            InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Error, InfoReceivedInvokeCallback, null);
         }
 
         public bool IsOpen {
@@ -58,8 +66,10 @@ namespace BBR_Calibrator {
         }
 
         public bool FindPort ( ) {
-            if (IsFindingPort)
+            if (IsFindingPort) {
+                PrintWarning("requested to find ports, but busy!");
                 return false;
+            }
 
             IsFindingPort = true;
 
@@ -70,7 +80,7 @@ namespace BBR_Calibrator {
                 foreach (string s in portNames)
                     allPorts += s + ", ";
 
-                PrintInfo("available ports: " + allPorts);
+                PrintInfo($"available ports: {allPorts}");
 
                 int totalWorks = portNames.Length;
                 int completedWorks = 0;
@@ -97,15 +107,16 @@ namespace BBR_Calibrator {
                                 serial = currentPort;
                                 isValidPortFound = true;
                             }
-                            if (completedWorks == totalWorks) {
-                                IsFindingPort = false;
-                                if (isValidPortFound) {
-                                    serial.DataReceived += Serial_DataReceived;
-                                    ValidPortFound?.BeginInvoke(serial.PortName, ValidPortFoundInvokeCallback, null);
-                                }
-                                else {
-                                    PrintWarning("no valid port found!");
-                                }
+                            if (completedWorks != totalWorks)
+                                return;
+
+                            IsFindingPort = false;
+                            if (isValidPortFound) {
+                                serial.DataReceived += Serial_DataReceived;
+                                ValidPortFound?.BeginInvoke(serial.PortName, ValidPortFoundInvokeCallback, null);
+                            }
+                            else {
+                                PrintWarning("no valid port found!");
                             }
                         });
                     backgroundWorker.RunWorkerAsync();
@@ -118,76 +129,79 @@ namespace BBR_Calibrator {
             return true;
         }
 
+        internal void Request ( ) {
+            byte [] CmdRead = { 0xFA, 0x01 };
+            Buffer.BlockCopy(CmdRead, 0, OutBuffer, 0, CmdRead.Length);
+
+            serial.BaseStream.Write(OutBuffer, 0, PackageLength);
+        }
+
         /// <summary>
         /// try opening and validating a port
         /// </summary>
         /// <param name="port">the port to try</param>
         /// <returns>if the port is valid</returns>
         private bool TryOpen ( SerialPort port ) {
-            PrintInfo("trying connecting to: " + port.PortName);
+            PrintInfo($"trying connecting to: {port.PortName}");
 
-            bool portIsValid = false;
             try {
-                byte [] queryBytes = new byte [2];
-                byte [] responseBytes = new byte [2];
-                queryBytes [0] = 0x0D;
-                queryBytes [1] = 0xFD;
-
                 port.Open();
-                //arduino AVR usually resets in 2s when COM port opened, STM USBSerial doesn't
-                Thread.Sleep(100);
-                port.Write(queryBytes, 0, queryBytes.Length);
-                long startMillis = Millis.Millis();
-
-                while (Millis.Millis() - startMillis < 1000) {
-                    if (port.BytesToRead != 0)
-                        break;
-                }
-                //wait for the rest of data
-                Thread.Sleep(10);
-
-                if (port.BytesToRead == 0)
-                    PrintWarning(port.PortName + " not responding");
-                else if (port.BytesToRead == 2) {
-                    byte [] response = new byte [2];
-                    port.BaseStream.Read(response, 0, 2);
-                    if (response [0] == 0xE5
-                     && response [1] == 0x56) {
-                        PrintInfo(port.PortName + " is OK, use it!");
-                        portIsValid = true;
-                        return true;
-                    }
-                    else {
-                        string text = string.Format("{0}: invalid response [0x{1:X2} 0x{2:X2}]", port.PortName, response [0], response [1]);
-                        PrintWarning(text);
-                    }
-                }
-                else {
-                    string text = string.Format("{0}: invalid response [{1} byte]", port.PortName, port.BytesToRead);
-                    PrintWarning(text);
-                }
             }
             catch {
-                PrintWarning("cannot open " + port.PortName);
+                PrintWarning($"cannot open {port.PortName}");
+                return false;
+            }
+
+            //arduino AVR usually resets in 2s when COM port opened, STM USBSerial doesn't
+            long startMillis = Millis.Millis();
+
+            Thread.Sleep(2000);
+            Buffer.BlockCopy(ConnectionQueryBytes, 0, OutBuffer, 0, ConnectionQueryBytes.Length);
+
+            port.Write(OutBuffer, 0, ConnectionQueryBytes.Length);
+
+            startMillis = Millis.Millis();
+
+            while (Millis.Millis() - startMillis < 1000) {
+                if (port.BytesToRead != 0)
+                    break;
+            }
+            //wait for the rest of data
+            Thread.Sleep(10);
+
+            if (port.BytesToRead == 0)
+                PrintWarning($"{port.PortName} not responding");
+
+            else if (port.BytesToRead == ConnectionQueryResponseBytes.Length) {
+                byte [] response = new byte [ConnectionQueryResponseBytes.Length];
+                port.BaseStream.Read(response, 0, ConnectionQueryResponseBytes.Length);
+
+                if (Compare(response, 0, ConnectionQueryResponseBytes, 0, ConnectionQueryResponseBytes.Length)) {
+                    PrintInfo($"{port.PortName} is OK, use it!");
+                    return true;
+                }
+                else {
+                    PrintWarning($"{port.PortName}: invalid response [0x{response [0]:X2} 0x{response [1]:X2}]");
+                }
+            }
+            else {
+                PrintWarning($"{port.PortName}: invalid response [{port.BytesToRead} byte]");
             }
             port.Close();
-            return portIsValid;
+            return false;
         }
 
         private void Serial_DataReceived ( object sender, SerialDataReceivedEventArgs e ) {
             if (serial.BytesToRead < 1) {
                 return;
             }
-            int size = serial.ReadByte();
-            Console.WriteLine(size);
-            byte [] buffer = new byte [size + 1];
 
             int index = 0;
             try {
-                while (index < size && serial.IsOpen) {
-                    buffer [index++] = (byte)serial.ReadByte();
+                while (index < PackageLength && serial.IsOpen) {
+                    InBuffer [index++] = (byte)serial.ReadByte();
                 }
-                ProcessData(buffer, size);
+                ProcessData();
             }
             catch (Exception exception) {
                 Console.WriteLine(exception.ToString());
@@ -209,32 +223,70 @@ namespace BBR_Calibrator {
             ValidPortFound?.EndInvoke(ar);
         }
 
-        private int errorCount = 0;
 
-        private void ProcessData ( byte [] buffer, int size ) {
-            byte [] tempBuffer = new byte [size];
-            Buffer.BlockCopy(buffer, 0, tempBuffer, 0, size);
-            if (tempBuffer [size - 1] != 0xFF) {
-                Console.WriteLine("Error");
-                errorCount++;
+        private void ProcessData ( ) {
+            if (!Compare(InBuffer, 0, BeginBytes, 0, BeginBytes.Length)) {
+                PrintError("data heading mismatch");
                 return;
             }
-            string data = string.Format("{0} ", size);
-            for (int i = 0; i < size; i++) {
-                data += string.Format("{0:X2} ", tempBuffer [i]);
+            if (!Compare(InBuffer, PackageLength - EndBytes.Length, EndBytes, 0, EndBytes.Length)) {
+                PrintError("data ending mismatch");
+                return;
             }
-            data += string.Format("{0}\n", errorCount);
+            if (!Checksum()) {
+                PrintError("Checksum error");
+            }
+            string data = "";
+            for (int i = 0; i < PackageLength; i++) {
+                data += string.Format("{0:X2} ", InBuffer [i]);
+            }
             DataReceived?.BeginInvoke(data, DataReceivedInvokeCallback, null);
+        }
+
+        private bool Checksum ( ) {
+            UInt16 sumCalulated = 0;
+            int dataStartIndex = 0 + BeginBytes.Length;
+            int dataEndIndex = PackageLength - EndBytes.Length - sizeof(UInt16);
+
+            for (int i = dataStartIndex; i < dataEndIndex; i++)
+                sumCalulated += (UInt16)InBuffer [i];
+
+            byte [] checksumBytes = new byte [sizeof(UInt16)];
+            Buffer.BlockCopy(InBuffer, dataEndIndex, checksumBytes, 0, sizeof(UInt16));
+
+            UInt16 sumReceived = (UInt16)BitConverter.ToInt16(checksumBytes, 0);
+            return sumCalulated.Equals(sumReceived);
+        }
+        /// <summary>
+        /// compare 2 arrays
+        /// </summary>
+        /// <param name="src">source array</param>
+        /// <param name="srcOffset">source offset</param>
+        /// <param name="dst">destination array</param>
+        /// <param name="dstOffset">destination offset</param>
+        /// <param name="count">number of bytes to compare</param>
+        /// <returns></returns>
+        private bool Compare ( byte [] src, int srcOffset, byte [] dst, int dstOffset, int count ) {
+            if (srcOffset + count > src.Length)
+                return false;
+            if (dstOffset + count > dst.Length)
+                return false;
+
+            for (int i = 0; i < count; i++) {
+                if (src [srcOffset + i] != dst [dstOffset + i])
+                    return false;
+            }
+            return true;
         }
 
         public bool Close ( ) {
             try {
                 if (serial.IsOpen) {
                     serial.Close();
-                    PrintInfo(serial.PortName + " closed!");
+                    PrintInfo($"{serial.PortName} closed!");
                 }
                 else
-                    PrintWarning(serial.PortName + " is not opened yet!");
+                    PrintWarning($"{serial.PortName} is not opened yet!");
             }
             catch (Exception exception) {
                 PrintError(exception.ToString());
@@ -248,10 +300,10 @@ namespace BBR_Calibrator {
             try {
                 if (!serial.IsOpen) {
                     serial.Open();
-                    PrintInfo(serial.PortName + " opened successfully!");
+                    PrintInfo($"{serial.PortName} opened successfully!");
                 }
                 else
-                    PrintWarning(serial.PortName + " is already opened!");
+                    PrintWarning($"{serial.PortName} is already opened!");
             }
             catch (Exception exception) {
                 PrintError(exception.ToString());
@@ -260,10 +312,6 @@ namespace BBR_Calibrator {
             return true;
         }
 
-        /// <summary>
-        /// for singleton uses, which shares the same instance between classes/forms
-        /// </summary>
-        /// <returns></returns>
         public static SerialCommunication Instance { get; } = new SerialCommunication();
     }
 }
