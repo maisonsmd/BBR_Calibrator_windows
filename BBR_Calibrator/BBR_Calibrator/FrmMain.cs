@@ -18,6 +18,7 @@ namespace BBR_Calibrator {
             InitializeComponent();
             Logger = new LoggerClass(this);
             IMU = new IMUClass(this);
+            IMU.HeadingChanged += IMU_HeadingChanged;
 
             MaterialSkinManager = MaterialSkinManager.Instance;
             MaterialSkinManager.AddFormToManage(this);
@@ -31,9 +32,12 @@ namespace BBR_Calibrator {
 
             Logger.PrintLogo();
             Logger.LogEvent(TAG, "Program started!", LoggerClass.EventType.Info);
-            IMU.Randomize();
 
             Size = new System.Drawing.Size(1000, 600);
+        }
+
+        private void IMU_HeadingChanged ( double angle ) {
+            Invoke(new EventHandler(delegate { LblHeading.Text = angle.ToString("0.00"); }));
         }
 
         private void Serial_ValidPortFound ( string portName ) {
@@ -48,9 +52,16 @@ namespace BBR_Calibrator {
             MaterialSkinManager.Theme = MaterialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? MaterialSkinManager.Themes.LIGHT : MaterialSkinManager.Themes.DARK;
         }
 
-        private void Serial_DataReceived ( string data ) {
-            if (CheckBoxEnableDataInLogging.Checked)
-                Invoke(new EventHandler(delegate { Logger.LogDataIn(data); }));
+        private void Serial_DataReceived ( byte[] data ) {
+
+            IMU.Interpret(data);
+            if (CheckBoxEnableDataInLogging.Checked) {
+                string dataString = "";
+                for (int i = 0; i < data.Length; i++) {
+                    dataString += string.Format("{0:X2} ", data [i]);
+                }
+                Invoke(new EventHandler(delegate { Logger.LogDataIn(dataString); }));
+            }
         }
 
         private void SerialComunication_ErrorOccurred ( string tag, string data ) {
@@ -99,6 +110,39 @@ namespace BBR_Calibrator {
 
         private void BtnRequest_Click ( object sender, EventArgs e ) {
             Serial.Request();
+        }
+
+        private void BtnClearEvents_Click ( object sender, EventArgs e ) {
+            Logger.ClearEvents();
+        }
+
+        private void BtnClearDataIn_Click ( object sender, EventArgs e ) {
+            Logger.ClearDataIn();
+        }
+
+        private void BtnClearIMU_Click ( object sender, EventArgs e ) {
+            IMU.Clear();
+        }
+
+        private void BtnStartIMU_Click ( object sender, EventArgs e ) {
+            TimerRequestIMU.Enabled = true;
+            TimerRequestIMU.Start();
+        }
+
+        private void BtnStopIMU_Click ( object sender, EventArgs e ) {
+            TimerRequestIMU.Stop();
+        }
+
+        private void TimerRequestIMU_Tick ( object sender, EventArgs e ) {
+            Serial.Request();
+        }
+
+        private void CheckBoxScaled_CheckedChanged ( object sender, EventArgs e ) {
+            IMU.DisplayScaled(CheckBoxScaled.Checked);
+        }
+
+        private void BtnClearScale_Click ( object sender, EventArgs e ) {
+            IMU.ClearScale();
         }
     }
 }

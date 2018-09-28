@@ -22,7 +22,7 @@ namespace BBR_Calibrator {
 
         public delegate void OnValidPortFound ( string portName );
 
-        public delegate void OnDataReceivedHandler ( string data );
+        public delegate void OnDataReceivedHandler ( byte[] data );
 
         public delegate void OnInfoReceivedHandler ( string tag, string errorString, LoggerClass.EventType eventType );
 
@@ -46,12 +46,9 @@ namespace BBR_Calibrator {
             //serial.DataReceived += Serial_DataReceived;
         }
 
-        private void PrintInfo ( string format , params object[] args) {
+        private void PrintInfo ( string format, params object [] args ) {
             InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Info, InfoReceivedInvokeCallback, null);
         }
-        //private void PrintInfo ( string format , params object[] args) {
-        //    InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Info, InfoReceivedInvokeCallback, null);
-        //}
 
         private void PrintWarning ( string format, params object [] args ) {
             InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Warning, InfoReceivedInvokeCallback, null);
@@ -61,6 +58,14 @@ namespace BBR_Calibrator {
             InfoReceived?.BeginInvoke(TAG, string.Format(format, args), LoggerClass.EventType.Error, InfoReceivedInvokeCallback, null);
         }
 
+        private void WriteRaw(SerialPort port, byte[] src, int srcOffset, int count ) {
+            try {
+                port.BaseStream.Write(src, srcOffset, count);
+            }
+            catch (Exception exception) {
+                PrintError(exception.ToString());
+            }
+        }
         public bool IsOpen {
             get { return serial.IsOpen; }
         }
@@ -132,8 +137,7 @@ namespace BBR_Calibrator {
         internal void Request ( ) {
             byte [] CmdRead = { 0xFA, 0x01 };
             Buffer.BlockCopy(CmdRead, 0, OutBuffer, 0, CmdRead.Length);
-
-            serial.BaseStream.Write(OutBuffer, 0, PackageLength);
+            WriteRaw(serial,  OutBuffer, 0, PackageLength);
         }
 
         /// <summary>
@@ -153,12 +157,12 @@ namespace BBR_Calibrator {
             }
 
             //arduino AVR usually resets in 2s when COM port opened, STM USBSerial doesn't
-            long startMillis = Millis.Millis();
+            ulong startMillis = Millis.Millis();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(200);
             Buffer.BlockCopy(ConnectionQueryBytes, 0, OutBuffer, 0, ConnectionQueryBytes.Length);
 
-            port.Write(OutBuffer, 0, ConnectionQueryBytes.Length);
+            WriteRaw(port, OutBuffer, 0, ConnectionQueryBytes.Length);
 
             startMillis = Millis.Millis();
 
@@ -171,7 +175,6 @@ namespace BBR_Calibrator {
 
             if (port.BytesToRead == 0)
                 PrintWarning($"{port.PortName} not responding");
-
             else if (port.BytesToRead == ConnectionQueryResponseBytes.Length) {
                 byte [] response = new byte [ConnectionQueryResponseBytes.Length];
                 port.BaseStream.Read(response, 0, ConnectionQueryResponseBytes.Length);
@@ -223,7 +226,6 @@ namespace BBR_Calibrator {
             ValidPortFound?.EndInvoke(ar);
         }
 
-
         private void ProcessData ( ) {
             if (!Compare(InBuffer, 0, BeginBytes, 0, BeginBytes.Length)) {
                 PrintError("data heading mismatch");
@@ -236,11 +238,10 @@ namespace BBR_Calibrator {
             if (!Checksum()) {
                 PrintError("Checksum error");
             }
-            string data = "";
-            for (int i = 0; i < PackageLength; i++) {
-                data += string.Format("{0:X2} ", InBuffer [i]);
-            }
-            DataReceived?.BeginInvoke(data, DataReceivedInvokeCallback, null);
+
+            byte [] dataPiece = new byte [PackageLength - BeginBytes.Length - EndBytes.Length - 2];
+            Buffer.BlockCopy(InBuffer, 0 + BeginBytes.Length, dataPiece, 0, dataPiece.Length);
+            DataReceived?.BeginInvoke(dataPiece, DataReceivedInvokeCallback, null);
         }
 
         private bool Checksum ( ) {
@@ -257,6 +258,7 @@ namespace BBR_Calibrator {
             UInt16 sumReceived = (UInt16)BitConverter.ToInt16(checksumBytes, 0);
             return sumCalulated.Equals(sumReceived);
         }
+
         /// <summary>
         /// compare 2 arrays
         /// </summary>

@@ -15,8 +15,8 @@ namespace BBR_Calibrator.MathHelpers {
             }
         }
         
-        public long Millis ( ) {
-            return (long)Math.Max(0L, DateTime.Now.Subtract(startTime).TotalMilliseconds);
+        public ulong Millis ( ) {
+            return (ulong)Math.Max(0L, DateTime.Now.Subtract(startTime).TotalMilliseconds);
         }
     }
 }

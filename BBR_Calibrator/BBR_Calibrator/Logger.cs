@@ -118,10 +118,18 @@ namespace BBR_Calibrator {
             TimerDataInUpdate.Start();
         }
 
+        public void ClearDataIn ( ) {
+            TextViewDataIn.Clear();
+        }
+
+        public void ClearEvents ( ) {
+            TextViewEvents.Clear();
+        }
+
         private void LogDataInSilently ( string data ) {
             string time = DateTime.Now.ToString("[HH:mm:ss.fff] ");
             TextViewDataIn.AppendTextWithHightlight(time, Color.Orange);
-            TextViewDataIn.AppendTextWithHightlight(data, Color.White);
+            TextViewDataIn.AppendTextWithHightlight($"{data}\n", Color.White);
         }
 
         public void LogDataOut ( string data ) {

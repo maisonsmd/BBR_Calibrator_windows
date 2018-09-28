@@ -23,11 +23,13 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent ( ) {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.TextViewData = new System.Windows.Forms.RichTextBox();
             this.TabSelectorMain = new MaterialSkin.Controls.MaterialTabSelector();
             this.TabControlMain = new MaterialSkin.Controls.MaterialTabControl();
             this.TabPageHome = new System.Windows.Forms.TabPage();
+            this.BtnRequest = new MaterialSkin.Controls.MaterialRaisedButton();
             this.BtnConnect = new MaterialSkin.Controls.MaterialRaisedButton();
             this.TabPageIMU = new System.Windows.Forms.TabPage();
             this.TabPageMotors = new System.Windows.Forms.TabPage();
@@ -45,7 +47,16 @@
             this.GraphXZ = new BBR_Calibrator.GraphicHelpers.Graph2D();
             this.GraphYZ = new BBR_Calibrator.GraphicHelpers.Graph2D();
             this.GraphXY = new BBR_Calibrator.GraphicHelpers.Graph2D();
-            this.BtnRequest = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.BtnClearEvents = new MaterialSkin.Controls.MaterialFlatButton();
+            this.BtnClearDataIn = new MaterialSkin.Controls.MaterialFlatButton();
+            this.BtnClearIMU = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.BtnStartIMU = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.BtnStopIMU = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.TimerRequestIMU = new System.Windows.Forms.Timer(this.components);
+            this.CheckBoxScaled = new System.Windows.Forms.CheckBox();
+            this.BtnClearScale = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.LblHeading = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageHome.SuspendLayout();
             this.TabPageIMU.SuspendLayout();
@@ -123,6 +134,22 @@
             this.TabPageHome.Text = "Home";
             this.TabPageHome.UseVisualStyleBackColor = true;
             // 
+            // BtnRequest
+            // 
+            this.BtnRequest.AutoSize = true;
+            this.BtnRequest.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnRequest.Depth = 0;
+            this.BtnRequest.Icon = null;
+            this.BtnRequest.Location = new System.Drawing.Point(9, 48);
+            this.BtnRequest.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnRequest.Name = "BtnRequest";
+            this.BtnRequest.Primary = true;
+            this.BtnRequest.Size = new System.Drawing.Size(80, 36);
+            this.BtnRequest.TabIndex = 3;
+            this.BtnRequest.Text = "Request";
+            this.BtnRequest.UseVisualStyleBackColor = true;
+            this.BtnRequest.Click += new System.EventHandler(this.BtnRequest_Click);
+            // 
             // BtnConnect
             // 
             this.BtnConnect.AutoSize = true;
@@ -141,6 +168,13 @@
             // 
             // TabPageIMU
             // 
+            this.TabPageIMU.Controls.Add(this.LblHeading);
+            this.TabPageIMU.Controls.Add(this.label1);
+            this.TabPageIMU.Controls.Add(this.BtnClearScale);
+            this.TabPageIMU.Controls.Add(this.CheckBoxScaled);
+            this.TabPageIMU.Controls.Add(this.BtnStopIMU);
+            this.TabPageIMU.Controls.Add(this.BtnStartIMU);
+            this.TabPageIMU.Controls.Add(this.BtnClearIMU);
             this.TabPageIMU.Controls.Add(this.GraphXZ);
             this.TabPageIMU.Controls.Add(this.GraphYZ);
             this.TabPageIMU.Controls.Add(this.GraphXY);
@@ -208,6 +242,7 @@
             // 
             // TabPageLogEvents
             // 
+            this.TabPageLogEvents.Controls.Add(this.BtnClearEvents);
             this.TabPageLogEvents.Controls.Add(this.TextViewEvents);
             this.TabPageLogEvents.Font = new System.Drawing.Font("Roboto", 10F);
             this.TabPageLogEvents.Location = new System.Drawing.Point(4, 29);
@@ -241,6 +276,7 @@
             // 
             // TabPageLogData
             // 
+            this.TabPageLogData.Controls.Add(this.BtnClearDataIn);
             this.TabPageLogData.Controls.Add(this.TextViewData);
             this.TabPageLogData.Controls.Add(this.CheckBoxEnableDataInLogging);
             this.TabPageLogData.Font = new System.Drawing.Font("Roboto", 10F);
@@ -377,21 +413,143 @@
             this.GraphXY.XAxisLabel = "X";
             this.GraphXY.YAxisLabel = "Y";
             // 
-            // BtnRequest
+            // BtnClearEvents
             // 
-            this.BtnRequest.AutoSize = true;
-            this.BtnRequest.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BtnRequest.Depth = 0;
-            this.BtnRequest.Icon = null;
-            this.BtnRequest.Location = new System.Drawing.Point(9, 48);
-            this.BtnRequest.MouseState = MaterialSkin.MouseState.HOVER;
-            this.BtnRequest.Name = "BtnRequest";
-            this.BtnRequest.Primary = true;
-            this.BtnRequest.Size = new System.Drawing.Size(80, 36);
-            this.BtnRequest.TabIndex = 3;
-            this.BtnRequest.Text = "Request";
-            this.BtnRequest.UseVisualStyleBackColor = true;
-            this.BtnRequest.Click += new System.EventHandler(this.BtnRequest_Click);
+            this.BtnClearEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnClearEvents.AutoSize = true;
+            this.BtnClearEvents.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnClearEvents.Depth = 0;
+            this.BtnClearEvents.Icon = null;
+            this.BtnClearEvents.Location = new System.Drawing.Point(706, 10);
+            this.BtnClearEvents.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.BtnClearEvents.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnClearEvents.Name = "BtnClearEvents";
+            this.BtnClearEvents.Primary = false;
+            this.BtnClearEvents.Size = new System.Drawing.Size(63, 36);
+            this.BtnClearEvents.TabIndex = 3;
+            this.BtnClearEvents.Text = "clear";
+            this.BtnClearEvents.UseVisualStyleBackColor = true;
+            this.BtnClearEvents.Click += new System.EventHandler(this.BtnClearEvents_Click);
+            // 
+            // BtnClearDataIn
+            // 
+            this.BtnClearDataIn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnClearDataIn.AutoSize = true;
+            this.BtnClearDataIn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnClearDataIn.Depth = 0;
+            this.BtnClearDataIn.Icon = null;
+            this.BtnClearDataIn.Location = new System.Drawing.Point(707, 9);
+            this.BtnClearDataIn.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.BtnClearDataIn.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnClearDataIn.Name = "BtnClearDataIn";
+            this.BtnClearDataIn.Primary = false;
+            this.BtnClearDataIn.Size = new System.Drawing.Size(63, 36);
+            this.BtnClearDataIn.TabIndex = 8;
+            this.BtnClearDataIn.Text = "clear";
+            this.BtnClearDataIn.UseVisualStyleBackColor = true;
+            this.BtnClearDataIn.Click += new System.EventHandler(this.BtnClearDataIn_Click);
+            // 
+            // BtnClearIMU
+            // 
+            this.BtnClearIMU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnClearIMU.AutoSize = true;
+            this.BtnClearIMU.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnClearIMU.Depth = 0;
+            this.BtnClearIMU.Icon = null;
+            this.BtnClearIMU.Location = new System.Drawing.Point(550, 425);
+            this.BtnClearIMU.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnClearIMU.Name = "BtnClearIMU";
+            this.BtnClearIMU.Primary = true;
+            this.BtnClearIMU.Size = new System.Drawing.Size(63, 36);
+            this.BtnClearIMU.TabIndex = 1;
+            this.BtnClearIMU.Text = "clear";
+            this.BtnClearIMU.UseVisualStyleBackColor = true;
+            this.BtnClearIMU.Click += new System.EventHandler(this.BtnClearIMU_Click);
+            // 
+            // BtnStartIMU
+            // 
+            this.BtnStartIMU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnStartIMU.AutoSize = true;
+            this.BtnStartIMU.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnStartIMU.Depth = 0;
+            this.BtnStartIMU.Icon = null;
+            this.BtnStartIMU.Location = new System.Drawing.Point(550, 467);
+            this.BtnStartIMU.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnStartIMU.Name = "BtnStartIMU";
+            this.BtnStartIMU.Primary = true;
+            this.BtnStartIMU.Size = new System.Drawing.Size(124, 36);
+            this.BtnStartIMU.TabIndex = 2;
+            this.BtnStartIMU.Text = "start reading";
+            this.BtnStartIMU.UseVisualStyleBackColor = true;
+            this.BtnStartIMU.Click += new System.EventHandler(this.BtnStartIMU_Click);
+            // 
+            // BtnStopIMU
+            // 
+            this.BtnStopIMU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnStopIMU.AutoSize = true;
+            this.BtnStopIMU.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnStopIMU.Depth = 0;
+            this.BtnStopIMU.Icon = null;
+            this.BtnStopIMU.Location = new System.Drawing.Point(680, 468);
+            this.BtnStopIMU.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnStopIMU.Name = "BtnStopIMU";
+            this.BtnStopIMU.Primary = true;
+            this.BtnStopIMU.Size = new System.Drawing.Size(117, 36);
+            this.BtnStopIMU.TabIndex = 3;
+            this.BtnStopIMU.Text = "stop reading";
+            this.BtnStopIMU.UseVisualStyleBackColor = true;
+            this.BtnStopIMU.Click += new System.EventHandler(this.BtnStopIMU_Click);
+            // 
+            // TimerRequestIMU
+            // 
+            this.TimerRequestIMU.Tick += new System.EventHandler(this.TimerRequestIMU_Tick);
+            // 
+            // CheckBoxScaled
+            // 
+            this.CheckBoxScaled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CheckBoxScaled.AutoSize = true;
+            this.CheckBoxScaled.Location = new System.Drawing.Point(550, 397);
+            this.CheckBoxScaled.Name = "CheckBoxScaled";
+            this.CheckBoxScaled.Size = new System.Drawing.Size(74, 22);
+            this.CheckBoxScaled.TabIndex = 4;
+            this.CheckBoxScaled.Text = "scaled?";
+            this.CheckBoxScaled.UseVisualStyleBackColor = true;
+            this.CheckBoxScaled.CheckedChanged += new System.EventHandler(this.CheckBoxScaled_CheckedChanged);
+            // 
+            // BtnClearScale
+            // 
+            this.BtnClearScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnClearScale.AutoSize = true;
+            this.BtnClearScale.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnClearScale.Depth = 0;
+            this.BtnClearScale.Icon = null;
+            this.BtnClearScale.Location = new System.Drawing.Point(619, 425);
+            this.BtnClearScale.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnClearScale.Name = "BtnClearScale";
+            this.BtnClearScale.Primary = true;
+            this.BtnClearScale.Size = new System.Drawing.Size(108, 36);
+            this.BtnClearScale.TabIndex = 5;
+            this.BtnClearScale.Text = "clear scale";
+            this.BtnClearScale.UseVisualStyleBackColor = true;
+            this.BtnClearScale.Click += new System.EventHandler(this.BtnClearScale_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(550, 354);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 18);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "heading:";
+            // 
+            // LblHeading
+            // 
+            this.LblHeading.AutoSize = true;
+            this.LblHeading.Location = new System.Drawing.Point(616, 354);
+            this.LblHeading.Name = "LblHeading";
+            this.LblHeading.Size = new System.Drawing.Size(16, 18);
+            this.LblHeading.TabIndex = 7;
+            this.LblHeading.Text = "0";
             // 
             // FrmMain
             // 
@@ -411,9 +569,11 @@
             this.TabPageHome.ResumeLayout(false);
             this.TabPageHome.PerformLayout();
             this.TabPageIMU.ResumeLayout(false);
+            this.TabPageIMU.PerformLayout();
             this.TabPageLog.ResumeLayout(false);
             this.TabControlLog.ResumeLayout(false);
             this.TabPageLogEvents.ResumeLayout(false);
+            this.TabPageLogEvents.PerformLayout();
             this.TabPageLogData.ResumeLayout(false);
             this.TabPageLogData.PerformLayout();
             this.TabPageDataOut.ResumeLayout(false);
@@ -446,6 +606,16 @@
         public System.Windows.Forms.RichTextBox TextViewDataOut;
         private MaterialSkin.Controls.MaterialRaisedButton BtnConnect;
         private MaterialSkin.Controls.MaterialRaisedButton BtnRequest;
+        private MaterialSkin.Controls.MaterialFlatButton BtnClearEvents;
+        private MaterialSkin.Controls.MaterialFlatButton BtnClearDataIn;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnStopIMU;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnStartIMU;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnClearIMU;
+        private System.Windows.Forms.Timer TimerRequestIMU;
+        private System.Windows.Forms.CheckBox CheckBoxScaled;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnClearScale;
+        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label LblHeading;
     }
 }
 

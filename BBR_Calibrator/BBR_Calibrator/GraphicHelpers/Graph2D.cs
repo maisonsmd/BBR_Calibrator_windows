@@ -149,10 +149,14 @@ namespace BBR_Calibrator.GraphicHelpers {
             #endregion draw axes' lines and labels
 
             #region draw points
-
             foreach (PointValue value in values) {
-                //g.DrawEllipse(pointPen, value.Boundary);
-                g.FillEllipse(pointBrush, value.Boundary);
+                try {
+                    //g.DrawEllipse(pointPen, value.Boundary);
+                    g.FillEllipse(pointBrush, value.Boundary);
+                }
+                catch {
+                    Console.WriteLine(value.Boundary);
+                }
             }
 
             #endregion draw points
