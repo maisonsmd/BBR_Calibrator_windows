@@ -7,15 +7,18 @@ using System.Windows.Forms;
 
 using ExtensionMethods;
 
-namespace BBR_Calibrator.GraphicHelpers {
+namespace BBR_Calibrator.GraphicHelpers
+{
 
-    internal struct PointValue {
+    internal struct PointValue
+    {
         public double X;
         public double Y;
         public Rectangle Boundary;
     }
 
-    public partial class Graph2D : UserControl {
+    public partial class Graph2D : UserControl
+    {
         private String xAxisLabel;
         private String yAxisLabel;
         private Color pointColor;
@@ -29,7 +32,8 @@ namespace BBR_Calibrator.GraphicHelpers {
         private double absoluteMaxValue;
         private int pointSize;
 
-        public Graph2D ( ) {
+        public Graph2D()
+        {
             InitializeComponent();
 
             values = new List<PointValue>();
@@ -47,7 +51,8 @@ namespace BBR_Calibrator.GraphicHelpers {
             textBrush = new SolidBrush(gridColor);
         }
 
-        public void AddPoint ( double xValue, double yValue ) {
+        public void AddPoint(double xValue, double yValue)
+        {
             int h = Size.Height;
             int w = Size.Width;
             PointValue newValue = new PointValue();
@@ -61,7 +66,8 @@ namespace BBR_Calibrator.GraphicHelpers {
             Invalidate(rectangle);
         }
 
-        public void Clear ( ) {
+        public void Clear()
+        {
             values.Clear();
             Invalidate();
         }
@@ -71,16 +77,18 @@ namespace BBR_Calibrator.GraphicHelpers {
                 return absoluteMaxValue;
             }
             set {
-                if (value != absoluteMaxValue) {
+                if (value != absoluteMaxValue)
+                {
                     int h = Size.Height;
                     int w = Size.Width;
                     absoluteMaxValue = Math.Abs(value);
 
-                    for (int i = 0; i < values.Count; i++) {
-                        PointValue pointValue = values [i];
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        PointValue pointValue = values[i];
                         pointValue.Boundary = new Rectangle((int)pointValue.X.Map(-absoluteMaxValue * 1.2, absoluteMaxValue * 1.2, 0, w),
                                     (int)pointValue.Y.Map(-absoluteMaxValue * 1.2, absoluteMaxValue * 1.2, h, 0), pointSize, pointSize);
-                        values [i] = pointValue;
+                        values[i] = pointValue;
                     }
                     Invalidate();
                 }
@@ -127,7 +135,8 @@ namespace BBR_Calibrator.GraphicHelpers {
             }
         }
 
-        private void Graph2D_Paint ( object sender, PaintEventArgs e ) {
+        private void Graph2D_Paint(object sender, PaintEventArgs e)
+        {
             Graphics g = e.Graphics;
             int h = Size.Height;
             int w = Size.Width;
@@ -149,12 +158,15 @@ namespace BBR_Calibrator.GraphicHelpers {
             #endregion draw axes' lines and labels
 
             #region draw points
-            foreach (PointValue value in values) {
-                try {
+            foreach (PointValue value in values)
+            {
+                try
+                {
                     //g.DrawEllipse(pointPen, value.Boundary);
                     g.FillEllipse(pointBrush, value.Boundary);
                 }
-                catch {
+                catch
+                {
                     Console.WriteLine(value.Boundary);
                 }
             }
@@ -162,7 +174,8 @@ namespace BBR_Calibrator.GraphicHelpers {
             #endregion draw points
         }
 
-        private void Graph2D_SizeChanged ( object sender, EventArgs e ) {
+        private void Graph2D_SizeChanged(object sender, EventArgs e)
+        {
             //if (Size.Width != Size.Height)
             //    Size = new Size((Size.Height + Size.Width) / 2, (Size.Height + Size.Width) / 2);
             Invalidate();

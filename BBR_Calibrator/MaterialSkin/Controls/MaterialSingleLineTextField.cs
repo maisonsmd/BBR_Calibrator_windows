@@ -25,7 +25,8 @@ namespace MaterialSkin.Controls {
 
         public override string Text { get { return _baseTextBox.Text; } set { _baseTextBox.Text = value; } }
         public new object Tag { get { return _baseTextBox.Tag; } set { _baseTextBox.Tag = value; } }
-        public new int MaxLength { get { return _baseTextBox.MaxLength; } set { _baseTextBox.MaxLength = value; } }
+        //public new int MaxLength { get { return _baseTextBox.MaxLength; } set { _baseTextBox.MaxLength = value; } }
+        public int MaxLength { get { return _baseTextBox.MaxLength; } set { _baseTextBox.MaxLength = value; } }
 
         public string SelectedText { get { return _baseTextBox.SelectedText; } set { _baseTextBox.SelectedText = value; } }
         public string Hint { get { return _baseTextBox.Hint; } set { _baseTextBox.Hint = value; } }
@@ -45,7 +46,7 @@ namespace MaterialSkin.Controls {
             _baseTextBox.Clear();
         }
 
-        public void Focus ( ) {
+        public new void Focus ( ) {
             _baseTextBox.Focus();
         }
 

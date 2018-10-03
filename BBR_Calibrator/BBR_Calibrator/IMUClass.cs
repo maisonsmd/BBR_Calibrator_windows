@@ -87,9 +87,12 @@ namespace BBR_Calibrator {
             GraphXZ.AbsoluteMaxValue = Math.Max(MaxValueX, MaxValueZ);
             GraphYZ.AbsoluteMaxValue = Math.Max(MaxValueY, MaxValueZ);
 
-            X.raw = (Int16)( X.raw - centerX);
-            Y.raw = (Int16)(Y.raw - centerY);
-            if (IsScaled) {
+
+            if (IsScaled)
+            {
+                X.raw = (Int16)(X.raw - centerX);
+                Y.raw = (Int16)(Y.raw - centerY);
+
                 Console.WriteLine($"{centerX} {centerY}");
                 GraphXY.AddPoint(X.raw, Y.raw);
                 GraphXZ.AddPoint(X.raw, Z.raw);
@@ -102,7 +105,7 @@ namespace BBR_Calibrator {
                 GraphYZ.AddPoint(Y.raw, Z.raw);
             }
 
-            double heading = Math.Atan2(Y.raw, X.raw) * 180.0 / Math.PI + 180.0;
+            double heading = Math.Atan2(Y.raw, X.raw) * 180.0 / Math.PI;
             HeadingChanged?.Invoke(heading);
         }
 
@@ -125,6 +128,10 @@ namespace BBR_Calibrator {
             Z.max = 0;
             Z.scale = 1;
             Z.offset = 0;
+
+            MaxValueX = 0;
+            MaxValueY = 0;
+            MaxValueZ = 0;
         }
     }
 }
